@@ -1,0 +1,125 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BotGuard Pro — No Mercy. No Downtime. Just Uptime Domination.</title>
+  <link rel="icon" href="https://raw.githubusercontent.com/sarduine13-star/botguardpro-site/main/logo.png" type="image/png">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background-color: #0b0d10;
+      color: #e6eef6;
+      line-height: 1.6;
+    }
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 25px 0;
+      background: #111418;
+      border-bottom: 2px solid #00b3ff;
+    }
+    header img {
+      height: 70px;
+      margin-right: 16px;
+    }
+    h1 {
+      font-size: 2rem;
+      margin: 0;
+    }
+    main {
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 0 20px;
+      text-align: center;
+    }
+    .tagline {
+      color: #94a3b8;
+      margin-bottom: 25px;
+    }
+    .cta {
+      display: inline-block;
+      background-color: #00b3ff;
+      color: #031628;
+      padding: 14px 30px;
+      border-radius: 10px;
+      font-weight: 700;
+      text-decoration: none;
+      font-size: 1.1rem;
+      transition: 0.3s;
+    }
+    .cta:hover {
+      background-color: #22d3ff;
+    }
+    .features {
+      display: grid;
+      gap: 20px;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      margin-top: 50px;
+    }
+    .feature {
+      background-color: #0e1318;
+      border-radius: 12px;
+      padding: 20px;
+      border: 1px solid #1f2937;
+    }
+    .feature h3 {
+      margin-top: 0;
+      color: #00b3ff;
+    }
+    footer {
+      text-align: center;
+      margin-top: 60px;
+      padding: 25px;
+      font-size: 0.9rem;
+      color: #9aa6b3;
+      border-top: 1px solid #1e2a37;
+    }
+    footer a {
+      color: #00b3ff;
+      text-decoration: none;
+    }
+    footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <img src="https://raw.githubusercontent.com/sarduine13-star/botguardpro-site/main/logo.png" alt="BotGuard Pro Logo">
+  <h1>BotGuard Pro</h1>
+</header>
+
+<main>
+  <h2>No Mercy. No Downtime. Just Uptime Domination.</h2>
+  <p class="tagline">Block fake traffic, bots, and junk before it hits your site. Deploy in under a minute.</p>
+  
+  <!-- Stripe link here -->
+  <a class="cta" href="https://buy.stripe.com/test_14A00j3hM5JcdjW7Uu0ZW00" target="_blank" rel="noopener">Start 7-Day Free Trial</a>
+
+  <div class="features">
+    <div class="feature">
+      <h3>⚙️ Drop-In Ready</h3>
+      <p>Integrates easily behind Nginx, Traefik, or API gateways. Zero downtime.</p>
+    </div>
+    <div class="feature">
+      <h3>🧠 Smart Rules</h3>
+      <p>Signed YAML packs that reload instantly without restarts.</p>
+    </div>
+    <div class="feature">
+      <h3>📊 Real-Time Metrics</h3>
+      <p>Monitor IPs, user-agents, and latency in real time.</p>
+    </div>
+  </div>
+</main>
+
+<footer>
+  © 2025 Redwine Design & Innovation · <a href="mailto:sarduine13@gmail.com">sarduine13@gmail.com</a>
+</footer>
+
+</body>
+</html>
