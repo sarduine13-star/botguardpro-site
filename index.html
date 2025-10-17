@@ -31,8 +31,8 @@
     position:sticky;top:0;background:rgba(11,13,16,.8);backdrop-filter:blur(6px);z-index:5
   }
   header img{width:56px;height:56px;border-radius:12px;filter:drop-shadow(0 0 18px rgba(34,211,255,.25))}
-  .brand-title{font-weight:800;letter-spacing:.2px}
-  .brand-sub{font-size:13px;color:var(--muted);margin-top:2px}
+  .brand-title{font-weight:800;font-size:1.6rem;letter-spacing:.3px}
+  .brand-sub{font-size:.85rem;color:var(--muted);margin-top:1px}
 
   .hero{display:grid;grid-template-columns:1fr;gap:18px;margin:42px 0 8px}
   .hero h1{font-size:clamp(28px,3.6vw,44px);line-height:1.15;margin:0}
@@ -80,8 +80,8 @@
     <header>
       <img src="logo.png" alt="BotGuard Pro logo">
       <div>
-        <div class="brand-title">Redwine Design & Innovation</div>
-        <div class="brand-sub">BotGuard Pro</div>
+        <div class="brand-title">BotGuard Pro</div>
+        <div class="brand-sub">by Redwine Innovation</div>
       </div>
       <div style="margin-left:auto">
         <a class="btn btn-ghost" href="#" id="openContact">Contact</a>
@@ -95,7 +95,6 @@
         zero bloat. 7-day free trial.
       </p>
       <div class="btns">
-        <!-- Replace with LIVE Stripe link when ready -->
         <a class="btn btn-primary" href="https://buy.stripe.com/test_14A00j3hM5JcdjW7Uu0ZW00" target="_blank" rel="noopener">
           Start 7-Day Free Trial
         </a>
@@ -121,18 +120,16 @@
     </section>
 
     <footer>
-      © 2025 Redwine Design & Innovation · All rights reserved
+      © 2025 Redwine Innovation · All rights reserved
     </footer>
   </div>
 
-  <!-- Contact Modal (no email shown on page) -->
+  <!-- Contact Modal -->
   <div class="modal-backdrop" id="modal">
     <div class="modal">
       <h3>Contact</h3>
       <p class="muted" style="margin:0 0 12px">Questions? Send a message below.</p>
 
-      <!-- Replace the action URL with your support alias later (Zoho, FormSubmit, etc.). 
-           Nothing is visible on the page. Until you replace it, we block submission. -->
       <form id="contactForm" action="REPLACE_WITH_YOUR_ENDPOINT" method="POST" class="row" novalidate>
         <input type="text" name="name" placeholder="Your name" required>
         <input type="email" name="email" placeholder="Your email" required>
@@ -147,19 +144,16 @@
   </div>
 
 <script>
-  // Modal toggles
-  const modal = document.getElementById('modal');
-  document.getElementById('openContact').addEventListener('click', e => { e.preventDefault(); modal.style.display='flex'; });
-  document.getElementById('closeContact').addEventListener('click', () => modal.style.display='none');
-  modal.addEventListener('click', e => { if(e.target===modal) modal.style.display='none'; });
-
-  // Block submission until endpoint is set (keeps email off the page)
-  const form = document.getElementById('contactForm');
-  form.addEventListener('submit', e => {
-    if (form.action.includes('REPLACE_WITH_YOUR_ENDPOINT')) {
+  const modal=document.getElementById('modal');
+  document.getElementById('openContact').addEventListener('click',e=>{e.preventDefault();modal.style.display='flex'});
+  document.getElementById('closeContact').addEventListener('click',()=>modal.style.display='none');
+  modal.addEventListener('click',e=>{if(e.target===modal)modal.style.display='none'});
+  const form=document.getElementById('contactForm');
+  form.addEventListener('submit',e=>{
+    if(form.action.includes('REPLACE_WITH_YOUR_ENDPOINT')){
       e.preventDefault();
-      document.getElementById('formNote').innerHTML =
-        'Add a private endpoint for this form (e.g., a Zoho alias or FormSubmit) — nothing is shown publicly.';
+      document.getElementById('formNote').innerHTML=
+        'Add a private endpoint for this form (Zoho alias or FormSubmit) — no email shown publicly.';
     }
   });
 </script>
