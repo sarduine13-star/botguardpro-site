@@ -1,0 +1,108 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  line-height: 1.6;
+  color: #111;
+  background: #fff;
+}
+
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem;
+}
+
+.site-header {
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.site-header .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+nav a {
+  margin-left: 1.5rem;
+  text-decoration: none;
+  color: #111;
+  font-weight: 500;
+}
+
+nav a.cta {
+  padding: 0.5rem 1rem;
+  border: 1px solid #111;
+}
+
+.hero {
+  background: #f6f7f8;
+}
+
+.hero h2 {
+  font-size: 2.4rem;
+}
+
+.subhead {
+  max-width: 700px;
+}
+
+.hero-cta a {
+  margin-right: 1rem;
+}
+
+.section.dark {
+  background: #111;
+  color: #fff;
+}
+
+.section h3 {
+  font-size: 2rem;
+}
+
+.primary {
+  background: #111;
+  color: #fff;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  text-decoration: none;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.secondary {
+  border: 1px solid currentColor;
+  padding: 0.75rem 1.5rem;
+  text-decoration: none;
+}
+
+.pricing-card {
+  border: 1px solid #ddd;
+  padding: 2rem;
+  max-width: 400px;
+}
+
+.price {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.contact-form input,
+.contact-form textarea {
+  width: 100%;
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+}
+
+.site-footer {
+  border-top: 1px solid #e5e5e5;
+  text-align: center;
+}
