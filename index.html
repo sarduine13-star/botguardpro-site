@@ -2,118 +2,210 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>BotGuard Pro — Revenue Loss Prevention</title>
+  <title>BotGuard Pro — Detect Revenue Loss from Hidden Traffic</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="BotGuard Pro exposes and prevents hidden revenue loss from bad traffic, abuse, refunds, and operational drag. Proof-first. Built for operators." />
+  <meta name="description" content="BotGuard Pro provides real operators with visibility into hidden revenue loss caused by bad traffic, abuse, refunds, and synthetic signals. Proof-first detection and analysis." />
+
+  <style>
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #0b0b0c;
+      color: #e5e5e5;
+      line-height: 1.6;
+    }
+    a { text-decoration: none; }
+    header {
+      padding: 16px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #0f0f11;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    header .nav-links a {
+      margin-left: 24px;
+      font-size: 16px;
+      color: #e5e5e5;
+    }
+    .btn-primary {
+      background: #ff6600;
+      color: #fff;
+      padding: 14px 30px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 18px;
+    }
+    .section {
+      padding: 72px 24px;
+      max-width: 960px;
+      margin: auto;
+    }
+    .section h2 {
+      font-size: 32px;
+      margin-bottom: 16px;
+      color: #fff;
+    }
+    .section p, .section li {
+      font-size: 18px;
+      color: #c1c1c1;
+    }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 24px;
+    }
+    footer {
+      text-align: center;
+      padding: 40px 24px;
+      color: #6b7280;
+      font-size: 14px;
+    }
+    .highlight {
+      color: #ff6600;
+      font-weight: 700;
+    }
+    .proof-box {
+      border: 1px solid #222;
+      padding: 24px;
+      border-radius: 8px;
+      margin-top: 24px;
+    }
+  </style>
+
 </head>
 
-<body style="
-  margin:0;
-  background:#0b0b0c;
-  color:#ffffff;
-  font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
-">
+<body>
 
-<div style="max-width:960px;margin:0 auto;padding:64px 24px;">
+  <!-- HEADER -->
+  <header>
+    <div style="font-size:24px;font-weight:800;color:#ff6600;">BotGuard Pro</div>
+    <div class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#proof">Proof</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </header>
 
   <!-- HERO -->
-  <h1 style="font-size:44px;line-height:1.1;letter-spacing:-0.02em;margin-bottom:16px;">
-    Stop Losing Revenue to Traffic You Don’t See
-  </h1>
+  <section class="section" style="text-align:center;">
+    <h1 style="font-size:48px;line-height:1.2;margin-bottom:24px;">
+      Stop Losing Revenue to Traffic You Don’t See
+    </h1>
+    <p style="margin-bottom:32px;font-size:20px;color:#a1a1aa;">
+      BotGuard Pro exposes where money is leaking — abuse, fake users, refunds, operational drag — and proves it before anything is blocked.
+    </p>
 
-  <p style="font-size:20px;color:#a1a1aa;max-width:760px;margin-bottom:40px;">
-    BotGuard Pro exposes where money is leaking — abuse, bad traffic, chargebacks,
-    fake users, operational drag — and proves it before anything is blocked.
-  </p>
+    <a class="btn-primary" href="https://buy.stripe.com/28E9ATeZU31efkI5mDcfK09" target="_blank">
+      Start Detection — $5,000 / month
+    </a>
+  </section>
 
-  <!-- OBJECTION KILLER -->
-  <div style="background:#111113;border-radius:10px;padding:20px;margin-bottom:48px;">
-    <strong>$5,000 / month sounds expensive.</strong><br>
-    <span style="color:#9ca3af;">
-      Most companies lose more than $5k a month in wages alone chasing problems caused by bad traffic —
-      before counting refunds, chargebacks, or lost conversions.
-    </span>
-  </div>
+  <!-- REAL WORLD IMPACT -->
+  <section id="proof" class="section">
+    <h2>Real Operators Are Losing Money Right Now</h2>
+    <p>
+      There are public reports of teams losing <span class="highlight">$20,000+ per week</span> in refunds and chargebacks caused by traffic that looks real — but isn’t.
+    </p>
 
-  <!-- WHAT IT DOES -->
-  <h2 style="font-size:28px;margin-bottom:16px;">What BotGuard Pro Actually Does</h2>
+    <div class="proof-box">
+      <p><strong>Live Metric Example:</strong></p>
+      <ul>
+        <li>Invisible revenue drain in funnels</li>
+        <li>Manual support labor wasted on “false positives”</li>
+        <li>Analytics poisoned by synthetic signals</li>
+      </ul>
+    </div>
+  </section>
 
-  <ul style="font-size:18px;color:#d1d5db;line-height:1.6;margin-bottom:40px;">
-    <li>Surfaces hidden abuse that traditional analytics miss</li>
-    <li>Shows real financial impact — refunds, wasted labor, lost revenue</li>
-    <li>Separates human traffic from automated, synthetic, and adversarial sources</li>
-    <li>Proves the problem <em>before</em> enforcement or blocking</li>
-  </ul>
+  <!-- FEATURES -->
+  <section id="features" class="section">
+    <h2>What BotGuard Pro Actually Does</h2>
 
-  <!-- PROOF FIRST -->
-  <h2 style="font-size:28px;margin-bottom:16px;">Proof First. Always.</h2>
+    <div class="grid-2">
+      <div>
+        <h3 class="highlight">Proof-First Detection</h3>
+        <p>We provide evidence, not guesses. See what’s harming revenue before blocking anything.</p>
+      </div>
+      <div>
+        <h3 class="highlight">Revenue-Focused Insights</h3>
+        <p>Traffic classification tied to financial impact — refunds, losses, operational cost.</p>
+      </div>
+      <div>
+        <h3 class="highlight">Traffic Legitimacy Separation</h3>
+        <p>Distinguishes human users from automated, synthetic, and adversarial sources.</p>
+      </div>
+      <div>
+        <h3 class="highlight">Synthetic Authority Detection</h3>
+        <p>Uncovers fake legitimacy signals and manufactured traffic credibility.</p>
+      </div>
+    </div>
+  </section>
 
-  <p style="font-size:18px;color:#a1a1aa;max-width:800px;margin-bottom:40px;">
-    We start with visibility. Operators see where they’re being hit,
-    how often, and what it’s costing them — in plain numbers.
-    No black boxes. No blind blocking.
-  </p>
+  <!-- HOW IT WORKS -->
+  <section class="section">
+    <h2>How It Works</h2>
+    <ul>
+      <li><strong>Step 1 — Proof Audit:</strong> We analyze your traffic and reveal hidden revenue loss.</li>
+      <li><strong>Step 2 — Diagnostic Report:</strong> You get clear numbers and why they matter.</li>
+      <li><strong>Step 3 — Ongoing Monitoring:</strong> Continuous detection and weekly reporting.</li>
+      <li><strong>Step 4 — Actionable Insights:</strong> You fix problems with confidence, not guesswork.</li>
+    </ul>
+  </section>
 
   <!-- PRICING -->
-  <h2 style="font-size:28px;margin-bottom:16px;">Pricing</h2>
+  <section id="pricing" class="section">
+    <h2>Pricing (Locked)</h2>
 
-  <div style="background:#111113;border-radius:12px;padding:32px;margin-bottom:32px;">
-    <h3 style="font-size:24px;margin-bottom:8px;">BotGuard Pro — Core</h3>
-    <p style="font-size:18px;color:#a1a1aa;margin-bottom:16px;">
-      Ongoing detection, monitoring, and revenue-loss visibility.
+    <div class="proof-box">
+      <h3>BotGuard Pro — Core</h3>
+      <p>Ongoing detection, monitoring, and revenue-loss visibility.</p>
+      <p><strong>$5,000 / month</strong></p>
+    </div>
+
+    <div class="proof-box">
+      <h3>Revenue Loss Audit</h3>
+      <p>Deep, one-time analysis showing exactly where and why revenue is leaking.</p>
+      <p><strong>$1,500 one-time</strong></p>
+    </div>
+
+    <div class="proof-box">
+      <h3>Synthetic Authority Detection</h3>
+      <p>Included in core. Exposes synthetic influence, fake signals, coordinated abuse.</p>
+      <p><strong>Included</strong></p>
+    </div>
+
+    <div style="text-align:center;margin-top:32px;">
+      <a class="btn-primary" href="https://buy.stripe.com/28E9ATeZU31efkI5mDcfK09" target="_blank">
+        Start with Proof Audit
+      </a>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about" class="section">
+    <h2>About BotGuard Pro</h2>
+    <p>
+      BotGuard Pro was created for operators who know something is wrong, but can’t see what it is.
+      We specialize in turning hidden revenue loss into visible, actionable insight — with no bias, no blind blocks, and no false alarms.
     </p>
-    <strong style="font-size:26px;">$5,000 / month</strong>
-  </div>
+  </section>
 
-  <div style="background:#0f172a;border-radius:12px;padding:32px;margin-bottom:32px;">
-    <h3 style="font-size:24px;margin-bottom:8px;">One-Time Revenue Loss Audit</h3>
-    <p style="font-size:18px;color:#a1a1aa;margin-bottom:16px;">
-      Deep analysis showing exactly where, how, and why you’re being hit.
-      Delivered as a standalone proof package.
-    </p>
-    <strong style="font-size:26px;">$1,500 one-time</strong>
-  </div>
+  <!-- CONTACT -->
+  <section id="contact" class="section">
+    <h2>Contact</h2>
+    <p>Email us at <a href="mailto:contact@botguardpro.com" style="color:#ff6600;">contact@botguardpro.com</a></p>
+    <p>Or use your preferred platform to reach out — we respond within 24 hours.</p>
+  </section>
 
-  <div style="background:#020617;border-radius:12px;padding:32px;margin-bottom:48px;">
-    <h3 style="font-size:24px;margin-bottom:8px;">Synthetic Authority Detection (Add-On)</h3>
-    <p style="font-size:18px;color:#a1a1aa;margin-bottom:16px;">
-      Identifies synthetic influence, fake legitimacy, coordinated abuse,
-      and artificial trust signals affecting revenue and decisions.
-    </p>
-    <strong style="font-size:26px;">Add-on service</strong>
-  </div>
-
-  <!-- CTA -->
-  <div style="text-align:center;margin-top:64px;">
-    <a
-      href="https://buy.stripe.com/28E9ATeZU31efkI5mDcfK09"
-      target="_blank"
-      style="
-        display:inline-block;
-        padding:20px 40px;
-        background:#ffffff;
-        color:#000000;
-        font-size:20px;
-        font-weight:700;
-        text-decoration:none;
-        border-radius:10px;
-      "
-    >
-      Subscribe — $5,000 / month
-    </a>
-
-    <p style="margin-top:20px;font-size:14px;color:#6b7280;">
-      Private access · Operator-led teams only
-    </p>
-  </div>
-
-</div>
-
-<!-- Cloudflare Analytics -->
-<script defer
-  src="https://static.cloudflareinsights.com/beacon.min.js"
-  data-cf-beacon='{"token":"08ecdad2c978415595d8a2722d80d766"}'>
-</script>
+  <!-- FOOTER -->
+  <footer>
+    <p>BotGuard Pro © 2026 • <a href="#" style="color:#ff6600;">Privacy Policy</a> • <a href="#" style="color:#ff6600;">Terms</a></p>
+  </footer>
 
 </body>
 </html>
