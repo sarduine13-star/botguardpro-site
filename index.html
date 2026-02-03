@@ -2,221 +2,53 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-
-  <title>BotGuard Pro — Revenue Loss Prevention for Real Traffic</title>
-
-  <meta name="description" content="BotGuard Pro detects non-human traffic before it drains ad spend, corrupts analytics, or pollutes signups. Detection-first. No CAPTCHAs. No friction." />
-  <link rel="canonical" href="https://botguardpro.com/" />
-
-  <link rel="stylesheet" href="styles.css" />
-  <script src="https://js.stripe.com/v3/"></script>
+  <title>BotGuard Pro</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 </head>
 
-<body>
+<body style="
+  margin:0;
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#0b0b0c;
+  color:#ffffff;
+  font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+">
 
-<header class="site-header">
-  <div class="container">
-    <h1 class="logo">BotGuard Pro</h1>
-    <nav>
-      <a href="#how">How It Works</a>
-      <a href="#proof">Proof</a>
-      <a href="#pricing">Pricing</a>
-      <a href="#contact" class="cta">Request Access</a>
-    </nav>
-  </div>
-</header>
+  <div style="text-align:center;max-width:640px;padding:24px;">
 
-<section class="hero">
-  <div class="container">
-    <h2>Stop paying for traffic that isn’t real.</h2>
-    <p class="subhead">
-      BotGuard Pro detects and isolates non-human activity at the edge —
-      before it corrupts analytics, drains ad spend, or pollutes signups.
+    <h1 style="font-size:42px;margin-bottom:16px;">
+      BotGuard Pro
+    </h1>
+
+    <p style="font-size:18px;color:#a1a1aa;margin-bottom:32px;">
+      Revenue-loss visibility for real traffic.<br>
+      Proof first. Detection ongoing.
     </p>
 
-    <ul class="hero-points">
-      <li>Detection-first. No CAPTCHAs. No friction.</li>
-      <li>Built for teams already losing money to bots.</li>
-      <li>Validated in live environments.</li>
-    </ul>
+    <!-- ✅ REAL STRIPE PAYMENT LINK -->
+    <a href="https://buy.stripe.com/28E9ATeZU31efkI5mDcfK09"
+       target="_blank"
+       style="
+         display:inline-block;
+         padding:18px 36px;
+         background:#ffffff;
+         color:#000000;
+         font-size:18px;
+         font-weight:700;
+         text-decoration:none;
+         border-radius:8px;
+       ">
+      Subscribe – $5,000 / month
+    </a>
 
-    <div class="hero-cta">
-      <a href="#contact" class="primary">Request Access</a>
-      <a href="#proof" class="secondary">Review Evidence (Private)</a>
-    </div>
-  </div>
-</section>
-
-<section class="section">
-  <div class="container">
-    <h3>The Quiet Revenue Leak</h3>
-    <p>
-      Most sites aren’t under attack — they’re bleeding quietly.
-      Fake traffic skews analytics, inflates CAC, burns ad spend,
-      and poisons growth decisions long before anyone notices.
+    <p style="margin-top:24px;font-size:14px;color:#6b7280;">
+      Private access · High-intent operators only
     </p>
 
-    <ul class="problem-list">
-      <li>Invalid traffic draining paid acquisition</li>
-      <li>Fake signups polluting funnels and CRMs</li>
-      <li>Scrapers eroding competitive advantage</li>
-      <li>Credential abuse distorting retention metrics</li>
-      <li>Security tools that miss financial damage</li>
-    </ul>
   </div>
-</section>
-
-<section id="how" class="section dark">
-  <div class="container">
-    <h3>What BotGuard Pro Does</h3>
-    <p>
-      BotGuard Pro identifies non-human behavior using
-      header-level and behavioral signals at the edge —
-      before traffic reaches your application.
-    </p>
-
-    <ul class="features">
-      <li>Real-time classification of automated traffic</li>
-      <li>No client-side challenges or UX degradation</li>
-      <li>Clean separation of human vs non-human signals</li>
-      <li>Accurate analytics and attribution restored</li>
-    </ul>
-
-    <p><strong>Result:</strong> Protected revenue and trustworthy data.</p>
-  </div>
-</section>
-
-<section id="proof" class="section">
-  <div class="container">
-    <h3>Proven in Live Environments</h3>
-    <ul class="proof-points">
-      <li>32–58% of inbound requests identified as non-human</li>
-      <li>Ad attribution accuracy restored within 48 hours</li>
-      <li>Credential abuse sources fingerprinted and isolated</li>
-      <li>Scraper networks correlated across multiple ASNs</li>
-      <li>Conversion metrics stabilized without user friction</li>
-    </ul>
-
-    <p class="note">
-      Metrics shown are anonymized and representative.
-      Full logs and evidence are reviewed privately.
-    </p>
-
-    <a href="#contact" class="primary">Request Evidence Review</a>
-  </div>
-</section>
-
-<section class="section dark">
-  <div class="container">
-    <h3>Advanced Capability</h3>
-    <h4>Synthetic Authority Detection (Add-On)</h4>
-
-    <p>
-      Modern bot operations don’t just send traffic —
-      they manufacture credibility.
-    </p>
-
-    <ul class="features">
-      <li>AI-generated content farms posing as experts</li>
-      <li>Bot-driven backlink and referral manipulation</li>
-      <li>Scraper → republisher authority loops</li>
-      <li>SEO poisoning and reputation laundering</li>
-    </ul>
-
-    <p class="note">
-      This module is private, scoped, and available only
-      after qualification.
-    </p>
-
-    <a href="#contact" class="secondary">Request Advanced Analysis</a>
-  </div>
-</section>
-
-<section id="pricing" class="section">
-  <div class="container">
-    <h3>Pricing</h3>
-
-    <div class="pricing-card">
-      <h4>BotGuard Pro</h4>
-      <p class="price">$5,000 / month</p>
-
-      <ul>
-        <li>Continuous detection & classification</li>
-        <li>Revenue-loss prevention focus</li>
-        <li>Priority analysis & response</li>
-        <li>Private reporting & reviews</li>
-      </ul>
-
-      <button id="stripe-checkout" class="primary">
-        Request Access
-      </button>
-
-      <p class="fine">
-        Detection-only signals available by request.
-        No public trials. No feature ladders.
-      </p>
-    </div>
-  </div>
-</section>
-
-<section id="contact" class="section dark">
-  <div class="container">
-    <h3>Request Access</h3>
-
-    <form class="contact-form">
-      <input type="text" placeholder="Name" required />
-      <input type="email" placeholder="Work Email" required />
-      <input type="text" placeholder="Company" />
-      <textarea placeholder="Briefly describe your traffic problem"></textarea>
-      <button type="submit" class="primary">Submit Request</button>
-    </form>
-  </div>
-</section>
-
-<footer class="site-footer">
-  <div class="container">
-    <p>© 2026 BotGuard Pro. All rights reserved.</p>
-    <nav>
-      <a href="#">Privacy Policy</a>
-      <a href="#">Terms of Service</a>
-      <a href="#">Security</a>
-    </nav>
-  </div>
-</footer>
-
-<script>
-  /* ========= STRIPE ========= */
-  const stripe = Stripe("pk_live_YOUR_PUBLIC_KEY"); // replace once
-
-  document.getElementById("stripe-checkout").addEventListener("click", () => {
-    stripe.redirectToCheckout({
-      lineItems: [{ price: "price_5K_MONTHLY_ID", quantity: 1 }],
-      mode: "subscription",
-      successUrl: "https://botguardpro.com/success",
-      cancelUrl: "https://botguardpro.com/"
-    });
-  });
-
-  /* ========= LEAD CAPTURE ========= */
-  document.querySelector(".contact-form").addEventListener("submit", e => {
-    e.preventDefault();
-
-    fetch("https://formspree.io/f/YOUR_FORM_ID", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        name: e.target[0].value,
-        email: e.target[1].value,
-        company: e.target[2].value,
-        message: e.target[3].value
-      })
-    }).then(() => {
-      alert("Request received. We’ll be in touch.");
-      e.target.reset();
-    });
-  });
-</script>
 
 </body>
 </html>
