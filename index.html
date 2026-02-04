@@ -120,7 +120,7 @@
 
   <!-- HEADER -->
   <header>
-    <div class="logo">BotGuard Pro</div>
+    <div><span class="logo">BotGuard Pro</span><div class="logo-tagline">Reveal what others miss.</div></div>
     <div class="nav-links">
       <a href="#features">Features</a>
       <a href="#proof">Proof</a>
@@ -372,9 +372,28 @@ function submitModalEmail() {
 <!-- Hero Background Style -->
 <style>
   #hero-section {
-    background: linear-gradient(180deg, #0b0b0c 0%, #111214 80%), url("https://images.pexels.com/photos/373543/pexels-photo-373543.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260") no-repeat center/cover;
+    background: linear-gradient(180deg, #0b0b0c 0%, #111214 80%), url("https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260") no-repeat center/cover;
     padding: 100px 24px 60px 24px;
     text-align: center;
     color: #fff;
   }
+</style>
+<style>
+
+/* Parallax Hero */
+#hero-section {
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+/* Tagline under logo */
+.logo-tagline {
+  font-size: 14px;
+  color: #eee;
+  margin-top: 4px;
+  font-style: italic;
+}
+
 </style>
