@@ -6,22 +6,27 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <style>
+    /* GLOBAL */
     body {
       margin: 0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       background: #0b0b0c;
       color: #e5e5e5;
+      line-height: 1.6;
     }
     a { text-decoration: none; }
+
+    /* HEADER */
     header {
       background: #111214;
+      color: #fff;
       padding: 18px 32px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      color: white;
       position: sticky;
       top: 0;
+      z-index: 999;
     }
     header .nav-links a {
       margin-left: 24px;
@@ -31,37 +36,80 @@
     header .nav-links a:hover {
       color: #ff6600;
     }
-    .btn-primary {
+    .logo {
+      font-size: 24px;
+      font-weight: 800;
+      color: #ff6600;
+    }
+
+    /* BUTTONS */
+    .btn {
+      display: inline-block;
       background: #ff6600;
       color: #fff;
-      padding: 14px 32px;
+      padding: 14px 30px;
       border-radius: 8px;
-      font-weight: bold;
       font-size: 18px;
-      display: inline-block;
+      font-weight: bold;
+      margin-top: 12px;
     }
+    .btn.secondary {
+      background: #444;
+      color: #fff;
+      margin-left: 12px;
+    }
+    .btn:hover {
+      opacity: 0.9;
+    }
+
+    /* SECTIONS */
     .section {
       padding: 60px 24px;
       max-width: 960px;
       margin: auto;
     }
     h1, h2, h3 {
-      color: white;
+      color: #fff;
+      margin-bottom: 12px;
     }
+
+    /* GRID */
     .grid-2 {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
       gap: 24px;
     }
+
     .box {
       background: #111214;
-      border: 1px solid #222;
       padding: 24px;
       border-radius: 8px;
+      border: 1px solid #222;
     }
+
+    /* DEMO */
+    video {
+      border-radius: 8px;
+    }
+
+    /* FAQ */
+    .faq-item {
+      margin-bottom: 24px;
+    }
+    .faq-question {
+      font-weight: bold;
+      color: #ff6600;
+      cursor: pointer;
+    }
+    .faq-answer {
+      margin-top: 8px;
+      color: #ccc;
+    }
+
+    /* FOOTER */
     footer {
       text-align: center;
-      padding: 32px;
+      padding: 24px;
       color: #777;
       font-size: 14px;
     }
@@ -72,85 +120,147 @@
 
   <!-- HEADER -->
   <header>
-    <div style="font-size:24px;font-weight:800;color:#ff6600;">BotGuard Pro</div>
+    <div class="logo">BotGuard Pro</div>
     <div class="nav-links">
-      <a href="#how-it-works">How It Works</a>
+      <a href="#features">Features</a>
       <a href="#proof">Proof</a>
+      <a href="#demo">Demo</a>
+      <a href="#how-it-works">How It Works</a>
       <a href="#pricing">Pricing</a>
+      <a href="#faq">FAQ</a>
       <a href="#contact">Contact</a>
     </div>
   </header>
 
   <!-- HERO -->
   <section class="section" style="text-align:center;">
-    <h1 style="font-size:48px;">Reveal Hidden Revenue Loss</h1>
-    <p style="font-size:20px; color:#ccc; max-width:780px; margin:auto;">
-      Bad traffic, bot abuse, disputes and refunds silently drain revenue. BotGuard Pro shows you exactly where and how — with actionable proof.
+    <h1>Reveal Hidden Revenue Loss from Bad Traffic</h1>
+    <p style="font-size:20px; color:#ccc; max-width:750px; margin:auto;">
+      Most analytics miss the subtle revenue drain caused by bad bots, invalid traffic, refund triggers, and operational waste.
+      BotGuard Pro shows you exactly where it’s leaking — before you lose more.
     </p>
-    <a class="btn-primary" href="#pricing">See Pricing & Get Started</a>
+
+    <!-- Dual CTA -->
+    <div style="margin-top:24px;">
+      <a class="btn" href="https://buy.stripe.com/3cIaEXaJEatGb4scP5cfK0b" target="_blank">
+        $1,500 One-Time Audit
+      </a>
+      <a class="btn secondary" href="https://buy.stripe.com/28E9ATeZU31efkI5mDcfK09" target="_blank">
+        $5,000 / month Subscription
+      </a>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section id="features" class="section">
+    <h2>Features</h2>
+    <div class="grid-2">
+      <div class="box">
+        <h3>Proof-First Detection</h3>
+        <p>See the traffic problems before anything is blocked — evidence, not guesses.</p>
+      </div>
+      <div class="box">
+        <h3>Revenue-Focused Insights</h3>
+        <p>Know which patterns are costing money and why.</p>
+      </div>
+      <div class="box">
+        <h3>Traffic Legitimacy Separation</h3>
+        <p>Distinguish real users from bots & adversarial actors.</p>
+      </div>
+      <div class="box">
+        <h3>Synthetic Authority Detection</h3>
+        <p>Expose fake signals and manufactured legitimacy.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROOF -->
+  <section id="proof" class="section">
+    <h2>Real Proof — Not Guesswork</h2>
+    <div class="grid-2">
+      <div class="box">
+        <h3>Live Abuse & Attack Traffic</h3>
+        <img src="assets/proof/cloudflare-attacks.png" alt="Cloudflare abuse traffic" style="width:100%; border-radius:8px;">
+      </div>
+      <div class="box">
+        <h3>30-Day Traffic Patterns</h3>
+        <img src="assets/proof/cloudflare-traffic-30d.png" alt="Traffic last 30 days" style="width:100%; border-radius:8px;">
+      </div>
+      <div class="box">
+        <h3>Visitor Anomalies</h3>
+        <img src="assets/proof/cloudflare-unique-visitors.png" alt="Cloudflare unique visitors" style="width:100%; border-radius:8px;">
+      </div>
+      <div class="box">
+        <h3>Deployment Proof</h3>
+        <img src="assets/proof/github-deployments.png" alt="GitHub deployments" style="width:100%; border-radius:8px;">
+      </div>
+    </div>
+  </section>
+
+  <!-- DEMO SECTION -->
+  <section id="demo" class="section">
+    <h2>Live Demos</h2>
+    <div class="grid-2">
+      <video controls>
+        <source src="assets/clips/traffic-demo.mp4" type="video/mp4">
+      </video>
+      <video controls>
+        <source src="assets/clips/refund-abuse-demo.mp4" type="video/mp4">
+      </video>
+    </div>
   </section>
 
   <!-- HOW IT WORKS -->
   <section id="how-it-works" class="section">
     <h2>How It Works</h2>
     <ul style="color:#ccc; font-size:18px;">
-      <li><strong>Step 1 — Proof Audit:</strong> Analyze traffic and reveal hidden leakage.</li>
-      <li><strong>Step 2 — Insights Report:</strong> Clear explanations paired with evidence.</li>
-      <li><strong>Step 3 — Ongoing Monitoring:</strong> Keep revenue visible, not hidden.</li>
-      <li><strong>Step 4 — Actionable Response:</strong> Fix issues with confidence.</li>
+      <li><strong>Step 1:</strong> Proof Audit — uncover hidden leaks.</li>
+      <li><strong>Step 2:</strong> Diagnostic Report — clear impact numbers.</li>
+      <li><strong>Step 3:</strong> Ongoing Monitoring — always keep visibility.</li>
+      <li><strong>Step 4:</strong> Actionable Insights — fix with confidence.</li>
     </ul>
-  </section>
-
-  <!-- PROOF -->
-  <section id="proof" class="section">
-    <h2>Proof: Where Revenue Is Actually Lost</h2>
-    <div class="grid-2">
-      <div class="box">
-        <h3>Live Abuse & Attack Traffic</h3>
-        <img src="assets/proof/cloudflare-attacks.png" alt="Cloudflare attacks" style="width:100%; border-radius:8px;">
-        <p style="color:#ccc;">Coordinated automated traffic that never converts but triggers refunds and operational drain.</p>
-      </div>
-      <div class="box">
-        <h3>30-Day Traffic Patterns</h3>
-        <img src="assets/proof/cloudflare-traffic-30d.png" alt="Traffic last 30 days" style="width:100%; border-radius:8px;">
-        <p style="color:#ccc;">Traffic volume steady while revenue silently drops — traditional analytics miss this.</p>
-      </div>
-      <div class="box">
-        <h3>Visitor Inflation</h3>
-        <img src="assets/proof/cloudflare-unique-visitors.png" alt="Unique visitor metrics" style="width:100%; border-radius:8px;">
-        <p style="color:#ccc;">Fake unique visitors inflate KPIs and mislead ops teams.</p>
-      </div>
-      <div class="box">
-        <h3>Deployment Proof</h3>
-        <img src="assets/proof/github-deployments.png" alt="Deployment history" style="width:100%; border-radius:8px;">
-        <p style="color:#ccc;">Verified deployments with real monitoring — not demos.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- LIVE STATS -->
-  <section class="section" style="text-align:center;">
-    <h2>Live Edge Stats</h2>
-    <p style="color:#ccc;">24,510 SSL requests served · 154 blocked abuse attempts · 1,610 unique visitors · 83.3 MB traffic processed</p>
   </section>
 
   <!-- PRICING -->
   <section id="pricing" class="section" style="text-align:center;">
     <h2>Pricing</h2>
-    <a class="btn-primary" href="https://buy.stripe.com/3cIaEXaJEatGb4scP5cfK0b" target="_blank">$1,500 One-Time Audit</a>
-    <br><br>
-    <a class="btn-primary" href="https://buy.stripe.com/28E9ATeZU31efkI5mDcfK09" target="_blank">$5,000 / month Subscription</a>
+    <div style="margin-top:24px;">
+      <a class="btn" href="https://buy.stripe.com/3cIaEXaJEatGb4scP5cfK0b" target="_blank">$1,500 One-Time Audit</a>
+      <br><br>
+      <a class="btn" href="https://buy.stripe.com/28E9ATeZU31efkI5mDcfK09" target="_blank">$5,000 / month Subscription</a>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" class="section">
+    <h2>Frequently Asked Questions</h2>
+
+    <div class="faq-item">
+      <div class="faq-question">Why is $5,000/month worth it?</div>
+      <div class="faq-answer">Most companies lose more in lost revenue than they would spend on a subscription — when you stop blind leakage, you save far more than the cost.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question">What if I just want an audit?</div>
+      <div class="faq-answer">$1,500 gets you a complete diagnostic showing the numbers and why it matters.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question">Can I add this to existing analytics?</div>
+      <div class="faq-answer">Yes — BotGuard Pro augments your current data stack; it doesn’t replace your tools.</div>
+    </div>
+
   </section>
 
   <!-- CONTACT -->
   <section id="contact" class="section" style="text-align:center;">
     <h2>Contact</h2>
-    <p>Email us at <a style="color:#ff6600;" href="mailto:info@botguardpro.com">info@botguardpro.com</a></p>
+    <p>Questions? Reach us at <a href="mailto:info@botguardpro.com" style="color:#ff6600;">info@botguardpro.com</a></p>
   </section>
 
   <!-- FOOTER -->
   <footer>
-    BotGuard Pro © 2026 • <a style="color:#ff6600;" href="#">Privacy Policy</a> • <a style="color:#ff6600;" href="#">Terms</a>
+    BotGuard Pro © 2026 • <a href="#" style="color:#ff6600;">Privacy Policy</a> • <a href="#" style="color:#ff6600;">Terms</a>
   </footer>
 
 </body>
