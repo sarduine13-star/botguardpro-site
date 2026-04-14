@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+﻿import { useState, useEffect, useRef } from "react";
 
 const STRIPE = {
   quickScan: "https://buy.stripe.com/dRmaEX5pk31eb4sg1hcfK0i",
@@ -149,7 +149,7 @@ function Nav() {
           }}
             onMouseEnter={e => { e.currentTarget.style.background = "#00ffaa"; e.currentTarget.style.transform = "translateY(-1px)"; }}
             onMouseLeave={e => { e.currentTarget.style.background = "#00ff88"; e.currentTarget.style.transform = "translateY(0)"; }}
-          >Scan My Site →</a>
+          >Scan My Site â†’</a>
         </div>
       </nav>
     </>
@@ -246,9 +246,9 @@ function Hero() {
             onMouseEnter={e => { e.currentTarget.style.background = "#00ffaa"; e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 8px 40px rgba(0,255,136,0.4)"; }}
             onMouseLeave={e => { e.currentTarget.style.background = "#00ff88"; e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 0 40px rgba(0,255,136,0.2)"; }}
           >
-            🔍 Scan My Site for $99
+            ðŸ” Scan My Site for $99
           </a>
-          <a href="#pricing" style={{
+          <a href="#free-audit" style={{
             background: "transparent", color: "rgba(255,255,255,0.7)", padding: "18px 32px", borderRadius: 8,
             fontSize: 14, fontWeight: 600, textDecoration: "none", fontFamily: "'DM Sans', sans-serif",
             border: "1px solid rgba(255,255,255,0.15)", transition: "all 0.2s",
@@ -268,6 +268,135 @@ function Hero() {
         {/* Live ticker */}
         <div style={{ maxWidth: 520, margin: "3rem auto 0", animation: "fadeInUp 0.7s ease 0.8s both" }}>
           <LiveTicker />
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
+function FoundersBeta() {
+  return (
+    <section style={{
+      padding: "70px 20px",
+      background: "linear-gradient(180deg, #08111f 0%, #0b1324 100%)",
+      borderTop: "1px solid rgba(0,255,136,0.12)",
+      borderBottom: "1px solid rgba(0,255,136,0.12)"
+    }}>
+      <div style={{ maxWidth: 900, margin: "0 auto", textAlign: "center" }}>
+        <div style={{
+          display: "inline-block",
+          padding: "6px 12px",
+          border: "1px solid rgba(0,255,136,0.25)",
+          borderRadius: "999px",
+          color: "#00ff88",
+          fontSize: 12,
+          fontWeight: 800,
+          letterSpacing: "0.18em",
+          marginBottom: "16px",
+          fontFamily: "'Space Mono', monospace"
+        }}>
+          FOUNDERS BETA â€¢ LIMITED ACCESS
+        </div>
+
+        <h2 style={{
+          fontFamily: "'Syne', sans-serif",
+          fontSize: "clamp(1.8rem, 3.5vw, 2.7rem)",
+          fontWeight: 900,
+          color: "#ffffff",
+          marginBottom: "16px",
+          letterSpacing: "-1px"
+        }}>
+          Join the BotGuard Pro Founders Beta
+        </h2>
+
+        <p style={{
+          maxWidth: 720,
+          margin: "0 auto 28px",
+          color: "rgba(255,255,255,0.72)",
+          fontSize: "1.05rem",
+          lineHeight: 1.7,
+          fontFamily: "'DM Sans', sans-serif"
+        }}>
+          Be among the first to uncover hidden revenue loss caused by fake traffic.
+          Free for a limited number of early adopters.
+        </p>
+
+        <div style={{
+          display: "inline-block",
+          textAlign: "left",
+          color: "#ffffff",
+          lineHeight: 1.9,
+          fontSize: "1rem",
+          marginBottom: "24px",
+          fontFamily: "'DM Sans', sans-serif"
+        }}>
+          <div>✓ Free Access for 90 Days</div>
+          <div>✓ Automated Bot Traffic Audit</div>
+          <div>✓ Real-Time Revenue Loss Insights</div>
+          <div>✓ AI-Powered Detection & Reporting</div>
+          <div>✓ Locked-In Lifetime Founder Pricing</div>
+          <div>✓ No Credit Card Required</div>
+        </div>
+
+        <div style={{
+          color: "#00ff88",
+          fontWeight: 800,
+          marginBottom: "24px",
+          fontSize: "1rem",
+          fontFamily: "'DM Sans', sans-serif"
+        }}>
+          Only 25 Founding Accounts Available
+        </div>
+
+        <div style={{
+          display: "flex",
+          gap: "14px",
+          justifyContent: "center",
+          flexWrap: "wrap",
+          marginBottom: "16px"
+        }}>
+          <a
+            href="#free-audit"
+            style={{
+              display: "inline-block",
+              background: "linear-gradient(90deg, #00ff88 0%, #7dffb2 100%)",
+              color: "#03120d",
+              padding: "14px 26px",
+              borderRadius: "12px",
+              textDecoration: "none",
+              fontWeight: 800,
+              boxShadow: "0 0 24px rgba(0,255,136,0.22)",
+              fontFamily: "'DM Sans', sans-serif"
+            }}
+          >
+            Claim Free Beta
+          </a>
+
+          <a
+            href="#free-audit"
+            style={{
+              display: "inline-block",
+              border: "1px solid rgba(0,255,136,0.55)",
+              color: "#00ff88",
+              padding: "14px 26px",
+              borderRadius: "12px",
+              textDecoration: "none",
+              fontWeight: 800,
+              background: "rgba(255,255,255,0.02)",
+              fontFamily: "'DM Sans', sans-serif"
+            }}
+          >
+            Run Free Audit
+          </a>
+        </div>
+
+        <div style={{
+          color: "rgba(255,255,255,0.5)",
+          fontSize: "0.92rem",
+          fontFamily: "'DM Sans', sans-serif"
+        }}>
+          Setup in under 10 minutes | Cancel anytime
         </div>
       </div>
     </section>
@@ -306,7 +435,7 @@ function SocialProof() {
                 </div>
                 <div>
                   <div style={{ fontFamily: "'Space Mono', monospace", fontSize: 12, color: "#fff", fontWeight: 700 }}>{name}</div>
-                  <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: "rgba(255,255,255,0.4)" }}>{role} · {company}</div>
+                  <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: "rgba(255,255,255,0.4)" }}>{role} Â· {company}</div>
                 </div>
               </div>
             </div>
@@ -335,12 +464,12 @@ function SocialProof() {
 
 function Problem() {
   const items = [
-    { icon: "💸", title: "Ad Spend Drained", desc: "Bots click your paid ads, burn your budget, and never convert. Google and Meta won't catch all of it — their incentive is your spend." },
-    { icon: "🖥️", title: "Hosting Costs Inflated", desc: "Fake traffic drives up your server bills, CDN costs, and compute usage every single month — invisibly." },
-    { icon: "🪑", title: "SaaS Seats Consumed", desc: "Fake signups eat your trial limits and plan quotas, blocking real customers and warping your funnel metrics." },
-    { icon: "🗑️", title: "CRM Poisoned", desc: "Fake leads flood your pipeline. Your sales team chases ghosts. Your cost-per-lead looks broken." },
-    { icon: "📊", title: "Analytics Destroyed", desc: "Bots tank your conversion rate, inflate bounce rates, and make a healthy funnel look like it's failing." },
-    { icon: "🔁", title: "It Never Stops", desc: "Bots evolve constantly. Without ongoing monitoring, new attack vectors open every month while you're looking elsewhere." },
+    { icon: "ðŸ’¸", title: "Ad Spend Drained", desc: "Bots click your paid ads, burn your budget, and never convert. Google and Meta won't catch all of it — their incentive is your spend." },
+    { icon: "ðŸ–¥ï¸", title: "Hosting Costs Inflated", desc: "Fake traffic drives up your server bills, CDN costs, and compute usage every single month — invisibly." },
+    { icon: "ðŸª‘", title: "SaaS Seats Consumed", desc: "Fake signups eat your trial limits and plan quotas, blocking real customers and warping your funnel metrics." },
+    { icon: "ðŸ—‘ï¸", title: "CRM Poisoned", desc: "Fake leads flood your pipeline. Your sales team chases ghosts. Your cost-per-lead looks broken." },
+    { icon: "ðŸ“Š", title: "Analytics Destroyed", desc: "Bots tank your conversion rate, inflate bounce rates, and make a healthy funnel look like it's failing." },
+    { icon: "ðŸ”", title: "It Never Stops", desc: "Bots evolve constantly. Without ongoing monitoring, new attack vectors open every month while you're looking elsewhere." },
   ];
 
   return (
@@ -416,7 +545,7 @@ function Calculator() {
       <div style={{ maxWidth: 700, margin: "0 auto", textAlign: "center" }}>
         <div style={{ fontFamily: "'Space Mono', monospace", fontSize: 11, color: "#00ff88", letterSpacing: "2px", marginBottom: "1rem" }}>WASTE CALCULATOR</div>
         <h2 style={{ fontFamily: "'Syne', sans-serif", fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 900, color: "#fff", letterSpacing: "-1px", marginBottom: "0.75rem" }}>
-          How Much Are You Losing?
+          <span id="free-audit"></span>How Much Are You Losing?
         </h2>
         <p style={{ fontFamily: "'DM Sans', sans-serif", color: "rgba(255,255,255,0.5)", marginBottom: "3rem", fontSize: 15 }}>
           Based on the industry average of 23% invalid traffic across paid campaigns.
@@ -459,7 +588,7 @@ function Calculator() {
           }}
             onMouseEnter={e => { e.currentTarget.style.background = "#00ffaa"; e.currentTarget.style.boxShadow = "0 8px 30px rgba(0,255,136,0.3)"; }}
             onMouseLeave={e => { e.currentTarget.style.background = "#00ff88"; e.currentTarget.style.boxShadow = "none"; }}
-          >Stop the Bleed — Run a Quick Scan for $99 →</a>
+          >Stop the Bleed — Run a Quick Scan for $99 â†’</a>
         </div>
       </div>
     </section>
@@ -479,7 +608,7 @@ function Pricing() {
         "Fully automated scan",
         "Bot traffic detection",
         "Estimated daily & monthly waste",
-        "Risk score (0–100)",
+        "Risk score (0â€“100)",
         "PDF report to your inbox",
         "Results in under 10 minutes",
       ],
@@ -584,7 +713,7 @@ function Pricing() {
               }}
                 onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = highlight ? "0 8px 30px rgba(0,255,136,0.3)" : "0 4px 20px rgba(0,0,0,0.3)"; if (!highlight) e.currentTarget.style.background = "rgba(255,255,255,0.12)"; }}
                 onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "none"; if (!highlight) e.currentTarget.style.background = "rgba(255,255,255,0.07)"; }}
-              >{cta} →</a>
+              >{cta} â†’</a>
             </div>
           ))}
         </div>
@@ -592,7 +721,7 @@ function Pricing() {
         {/* Guarantee */}
         <div style={{ textAlign: "center", marginTop: "3rem", padding: "1.5rem", background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: 12 }}>
           <div style={{ fontFamily: "'Space Mono', monospace", fontSize: 13, color: "rgba(255,255,255,0.6)" }}>
-            🔒 <strong style={{ color: "#fff" }}>Delivery Guarantee</strong> — If you don't receive your report within 24 hours, we'll make it right. Email <a href="mailto:info@botguardpro.com" style={{ color: "#00ff88" }}>info@botguardpro.com</a>
+            ðŸ”’ <strong style={{ color: "#fff" }}>Delivery Guarantee</strong> — If you don't receive your report within 24 hours, we'll make it right. Email <a href="mailto:info@botguardpro.com" style={{ color: "#00ff88" }}>info@botguardpro.com</a>
           </div>
         </div>
       </div>
@@ -662,10 +791,10 @@ function FinalCTA() {
           onMouseEnter={e => { e.currentTarget.style.background = "#00ffaa"; e.currentTarget.style.transform = "translateY(-3px)"; e.currentTarget.style.boxShadow = "0 12px 60px rgba(0,255,136,0.4)"; }}
           onMouseLeave={e => { e.currentTarget.style.background = "#00ff88"; e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 0 60px rgba(0,255,136,0.2)"; }}
         >
-          🔍 Find My Leaks for $99 →
+          ðŸ” Find My Leaks for $99 â†’
         </a>
         <div style={{ marginTop: "1.5rem", fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: "rgba(255,255,255,0.3)" }}>
-          Automated report • No setup • Results in minutes
+          Automated report â€¢ No setup â€¢ Results in minutes
         </div>
       </div>
     </section>
@@ -716,8 +845,8 @@ function Footer() {
           </div>
         </div>
         <div style={{ borderTop: "1px solid rgba(255,255,255,0.05)", paddingTop: "1.5rem", display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: "1rem" }}>
-          <div style={{ fontFamily: "'Space Mono', monospace", fontSize: 11, color: "rgba(255,255,255,0.25)" }}>© 2025 BotGuardPro. All rights reserved.</div>
-          <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: "rgba(255,255,255,0.25)" }}>Payments secured by Stripe · Hosted on Cloudflare</div>
+          <div style={{ fontFamily: "'Space Mono', monospace", fontSize: 11, color: "rgba(255,255,255,0.25)" }}>Â© 2025 BotGuardPro. All rights reserved.</div>
+          <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: "rgba(255,255,255,0.25)" }}>Payments secured by Stripe Â· Hosted on Cloudflare</div>
         </div>
       </div>
     </footer>
@@ -747,6 +876,7 @@ export default function App() {
       <Problem />
       <HowItWorks />
       <Calculator />
+      <FoundersBeta />
       <Pricing />
       <FAQ />
       <FinalCTA />
@@ -754,6 +884,8 @@ export default function App() {
     </>
   );
 }
+
+
 
 
 
