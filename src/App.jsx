@@ -5,7 +5,7 @@ const STRIPE = {
   revenueAudit: "https://buy.stripe.com/dRm9ATg3Y9pC6Oc5mDcfK0h",
   revenueShield: "https://buy.stripe.com/dRm14naJEgS42xWcP5cfK0g",
 };
-const API_BASE_URL = "https://botguard-agent-production.up.railway.app";
+const API_BASE_URL = "https://api2.botguardpro.com";
 
 const NAV_LINKS = ["Problem", "How It Works", "Pricing", "FAQ"];
 

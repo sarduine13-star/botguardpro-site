@@ -248,9 +248,7 @@ function Hero() {
           >
             ðŸ” Scan My Site for $99
           </a>
-          <button
-            onClick={() => document.getElementById("free-audit")?.scrollIntoView({ behavior: "smooth", block: "start" })}
-            style={{
+          <a href="#free-audit" style={{
             background: "transparent", color: "rgba(255,255,255,0.7)", padding: "18px 32px", borderRadius: 8,
             fontSize: 14, fontWeight: 600, textDecoration: "none", fontFamily: "'DM Sans', sans-serif",
             border: "1px solid rgba(255,255,255,0.15)", transition: "all 0.2s",
@@ -358,8 +356,8 @@ function FoundersBeta() {
           flexWrap: "wrap",
           marginBottom: "16px"
         }}>
-          <button
-            onClick={() => document.getElementById("free-audit")?.scrollIntoView({ behavior: "smooth", block: "start" })}
+          <a
+            href="#free-audit"
             style={{
               display: "inline-block",
               background: "linear-gradient(90deg, #00ff88 0%, #7dffb2 100%)",
@@ -370,10 +368,10 @@ function FoundersBeta() {
               fontWeight: 800,
               boxShadow: "0 0 24px rgba(0,255,136,0.22)",
               fontFamily: "'DM Sans', sans-serif"
-            , border: "none", cursor: "pointer" }}
+            }}
           >
             Claim Free Beta
-          </button>
+          </a>
 
           <a
             href="#free-audit"
@@ -387,10 +385,10 @@ function FoundersBeta() {
               fontWeight: 800,
               background: "rgba(255,255,255,0.02)",
               fontFamily: "'DM Sans', sans-serif"
-            , cursor: "pointer" }}
+            }}
           >
             Run Free Audit
-          </button>
+          </a>
         </div>
 
         <div style={{
