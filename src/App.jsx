@@ -5,6 +5,7 @@ const STRIPE = {
   revenueAudit: "https://buy.stripe.com/dRm9ATg3Y9pC6Oc5mDcfK0h",
   revenueShield: "https://buy.stripe.com/dRm14naJEgS42xWcP5cfK0g",
 };
+const API_BASE_URL = "https://botguard-agent-production.up.railway.app";
 
 const NAV_LINKS = ["Problem", "How It Works", "Pricing", "FAQ"];
 
@@ -283,9 +284,41 @@ function HowItWorks() {
 
 function Calculator() {
   const [spend, setSpend] = useState(5000);
+  const [scanInput, setScanInput] = useState("");
+  const [scanLoading, setScanLoading] = useState(false);
+  const [scanError, setScanError] = useState("");
+  const [scanResult, setScanResult] = useState(null);
   const wasteRate = 0.23;
   const waste = Math.round(spend * wasteRate);
   const monthly = waste * 30;
+
+  async function handleFreeScanSubmit(e) {
+    e.preventDefault();
+    if (!scanInput.trim()) return;
+
+    setScanLoading(true);
+    setScanError("");
+    setScanResult(null);
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/scan`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ domain: scanInput.trim() }),
+      });
+
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data?.message || "Scan request failed");
+      }
+
+      setScanResult(data);
+    } catch (error) {
+      setScanError("Scan temporarily unavailable. You can still continue to checkout.");
+    } finally {
+      setScanLoading(false);
+    }
+  }
 
   return (
     <section style={{ padding: "100px 2rem" }}>
@@ -299,6 +332,70 @@ function Calculator() {
         </p>
 
         <div style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 16, padding: "2.5rem" }}>
+          <form onSubmit={handleFreeScanSubmit} style={{ marginBottom: "1.5rem" }}>
+            <label style={{ fontFamily: "'Space Mono', monospace", fontSize: 12, color: "rgba(255,255,255,0.5)", display: "block", marginBottom: "0.75rem" }}>
+              FREE SCAN DOMAIN OR URL
+            </label>
+            <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
+              <input
+                type="text"
+                value={scanInput}
+                onChange={(e) => setScanInput(e.target.value)}
+                placeholder="example.com"
+                style={{
+                  flex: "1 1 280px",
+                  minWidth: 220,
+                  padding: "12px 14px",
+                  borderRadius: 8,
+                  border: "1px solid rgba(255,255,255,0.18)",
+                  background: "rgba(0,0,0,0.25)",
+                  color: "#fff",
+                  fontFamily: "'DM Sans', sans-serif",
+                  fontSize: 14,
+                }}
+              />
+              <button
+                type="submit"
+                disabled={scanLoading}
+                style={{
+                  padding: "12px 18px",
+                  borderRadius: 8,
+                  border: "1px solid rgba(0,255,136,0.35)",
+                  background: "rgba(0,255,136,0.08)",
+                  color: "#00ff88",
+                  fontFamily: "'Space Mono', monospace",
+                  fontSize: 12,
+                  fontWeight: 700,
+                  cursor: scanLoading ? "not-allowed" : "pointer",
+                  opacity: scanLoading ? 0.7 : 1,
+                }}
+              >
+                {scanLoading ? "Scanning..." : "Run Free Scan"}
+              </button>
+            </div>
+          </form>
+
+          {scanError && (
+            <div style={{ marginBottom: "1.25rem", padding: "10px 12px", borderRadius: 8, border: "1px solid rgba(255,120,120,0.4)", background: "rgba(255,60,60,0.07)", color: "rgba(255,210,210,0.95)", fontFamily: "'DM Sans', sans-serif", fontSize: 13 }}>
+              {scanError}
+            </div>
+          )}
+
+          {scanResult && (
+            <div style={{ marginBottom: "1.5rem", padding: "14px", borderRadius: 10, border: "1px solid rgba(0,255,136,0.2)", background: "rgba(0,255,136,0.05)", textAlign: "left" }}>
+              <div style={{ fontFamily: "'Space Mono', monospace", fontSize: 12, color: "#00ff88", marginBottom: "0.75rem" }}>SCAN RESULT</div>
+              <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 14, color: "rgba(255,255,255,0.82)", lineHeight: 1.7 }}>
+                <div><strong>scanId:</strong> {scanResult.scanId ?? "n/a"}</div>
+                <div><strong>domain:</strong> {scanResult.domain ?? "n/a"}</div>
+                <div><strong>riskScore:</strong> {scanResult.riskScore ?? scanResult.score ?? "n/a"}</div>
+                <div><strong>riskLevel:</strong> {scanResult.riskLevel ?? "n/a"}</div>
+                <div><strong>fakeSessions:</strong> {scanResult.fakeSessions ?? "n/a"}</div>
+                <div><strong>estimatedDailyWasteUsd:</strong> {scanResult.estimatedDailyWasteUsd ?? "n/a"}</div>
+                <div><strong>recommendation:</strong> {scanResult.recommendation ?? "n/a"}</div>
+              </div>
+            </div>
+          )}
+
           <div style={{ marginBottom: "2rem" }}>
             <label style={{ fontFamily: "'Space Mono', monospace", fontSize: 12, color: "rgba(255,255,255,0.5)", display: "block", marginBottom: "1rem" }}>
               DAILY AD SPEND: <span style={{ color: "#00ff88" }}>${spend.toLocaleString()}</span>
