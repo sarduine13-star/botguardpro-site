@@ -70,13 +70,45 @@ function Nav() {
           }}
           onMouseEnter={e => { e.target.style.background = "#00ffaa"; e.target.style.transform = "translateY(-1px)"; }}
           onMouseLeave={e => { e.target.style.background = "#00ff88"; e.target.style.transform = "translateY(0)"; }}
-        >Scan My Site →</a>
+        >Quick Revenue Audit — $99</a>
       </div>
     </nav>
   );
 }
 
 function Hero() {
+  const [scanInput, setScanInput] = useState("");
+  const [scanLoading, setScanLoading] = useState(false);
+  const [scanError, setScanError] = useState("");
+  const [scanResult, setScanResult] = useState(null);
+
+  async function handleFreeScanSubmit(e) {
+    e.preventDefault();
+    if (!scanInput.trim()) return;
+
+    setScanLoading(true);
+    setScanError("");
+    setScanResult(null);
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/scan`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ domain: scanInput.trim() }),
+      });
+
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data?.message || "Scan request failed");
+      }
+      setScanResult(data);
+    } catch (error) {
+      setScanError("Scan temporarily unavailable. You can still continue to checkout.");
+    } finally {
+      setScanLoading(false);
+    }
+  }
+
   return (
     <section style={{
       minHeight: "100vh",
@@ -168,7 +200,7 @@ function Hero() {
             onMouseEnter={e => { e.currentTarget.style.background = "#00ffaa"; e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 8px 30px rgba(0,255,136,0.3)"; }}
             onMouseLeave={e => { e.currentTarget.style.background = "#00ff88"; e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "none"; }}
           >
-            Run a $99 Quick Scan →
+            Quick Revenue Audit — $99
           </a>
           <a href="#pricing"
             style={{
@@ -189,6 +221,84 @@ function Hero() {
             View All Plans
           </a>
         </div>
+
+        <form onSubmit={handleFreeScanSubmit} style={{ marginTop: "1.25rem", maxWidth: 640, marginInline: "auto" }}>
+          <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", justifyContent: "center" }}>
+            <input
+              type="text"
+              value={scanInput}
+              onChange={(e) => setScanInput(e.target.value)}
+              placeholder="Enter your website domain (example.com)"
+              style={{
+                flex: "1 1 340px",
+                minWidth: 250,
+                padding: "12px 14px",
+                borderRadius: 8,
+                border: "1px solid rgba(255,255,255,0.18)",
+                background: "rgba(0,0,0,0.25)",
+                color: "#fff",
+                fontFamily: "'DM Sans', sans-serif",
+                fontSize: 14,
+              }}
+            />
+            <button
+              type="submit"
+              disabled={scanLoading}
+              style={{
+                padding: "12px 18px",
+                borderRadius: 8,
+                border: "1px solid rgba(0,255,136,0.35)",
+                background: "rgba(0,255,136,0.08)",
+                color: "#00ff88",
+                fontFamily: "'Space Mono', monospace",
+                fontSize: 12,
+                fontWeight: 700,
+                cursor: scanLoading ? "not-allowed" : "pointer",
+                opacity: scanLoading ? 0.7 : 1,
+              }}
+            >
+              {scanLoading ? "Scanning..." : "Run Free Scan"}
+            </button>
+          </div>
+        </form>
+
+        {scanError && (
+          <div style={{ marginTop: "0.9rem", marginInline: "auto", maxWidth: 640, padding: "10px 12px", borderRadius: 8, border: "1px solid rgba(255,120,120,0.4)", background: "rgba(255,60,60,0.07)", color: "rgba(255,210,210,0.95)", fontFamily: "'DM Sans', sans-serif", fontSize: 13 }}>
+            {scanError}
+          </div>
+        )}
+
+        {scanResult && (
+          <div style={{ marginTop: "1rem", marginInline: "auto", maxWidth: 640, padding: "14px", borderRadius: 10, border: "1px solid rgba(0,255,136,0.2)", background: "rgba(0,255,136,0.05)", textAlign: "left" }}>
+            <div style={{ fontFamily: "'Space Mono', monospace", fontSize: 12, color: "#00ff88", marginBottom: "0.75rem" }}>FREE SCAN RESULT</div>
+            <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 14, color: "rgba(255,255,255,0.82)", lineHeight: 1.7 }}>
+              <div><strong>riskScore:</strong> {scanResult.riskScore ?? scanResult.score ?? "n/a"}</div>
+              <div><strong>fakeSessions:</strong> {scanResult.fakeSessions ?? "n/a"}</div>
+              <div><strong>estimatedDailyWasteUsd:</strong> {scanResult.estimatedDailyWasteUsd ?? "n/a"}</div>
+              <div><strong>riskLevel:</strong> {scanResult.riskLevel ?? "n/a"}</div>
+              <div><strong>recommendation:</strong> {scanResult.recommendation ?? "n/a"}</div>
+            </div>
+            <a
+              href={STRIPE.quickScan}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                display: "inline-block",
+                marginTop: "1rem",
+                background: "#00ff88",
+                color: "#000",
+                padding: "12px 18px",
+                borderRadius: 8,
+                fontSize: 13,
+                fontWeight: 800,
+                textDecoration: "none",
+                fontFamily: "'Space Mono', monospace",
+              }}
+            >
+              Get Full Revenue Audit — $99
+            </a>
+          </div>
+        )}
 
         <div style={{ marginTop: "3rem", display: "flex", gap: "2rem", justifyContent: "center", flexWrap: "wrap" }}>
           {[["$0", "Average daily waste from bot traffic"], ["80%", "Of bot clicks bypass standard blockers"], ["3 min", "Time to get your scan report"]].map(([val, label]) => (
@@ -284,41 +394,9 @@ function HowItWorks() {
 
 function Calculator() {
   const [spend, setSpend] = useState(5000);
-  const [scanInput, setScanInput] = useState("");
-  const [scanLoading, setScanLoading] = useState(false);
-  const [scanError, setScanError] = useState("");
-  const [scanResult, setScanResult] = useState(null);
   const wasteRate = 0.23;
   const waste = Math.round(spend * wasteRate);
   const monthly = waste * 30;
-
-  async function handleFreeScanSubmit(e) {
-    e.preventDefault();
-    if (!scanInput.trim()) return;
-
-    setScanLoading(true);
-    setScanError("");
-    setScanResult(null);
-
-    try {
-      const response = await fetch(`${API_BASE_URL}/scan`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ domain: scanInput.trim() }),
-      });
-
-      const data = await response.json();
-      if (!response.ok) {
-        throw new Error(data?.message || "Scan request failed");
-      }
-
-      setScanResult(data);
-    } catch (error) {
-      setScanError("Scan temporarily unavailable. You can still continue to checkout.");
-    } finally {
-      setScanLoading(false);
-    }
-  }
 
   return (
     <section style={{ padding: "100px 2rem" }}>
@@ -332,70 +410,6 @@ function Calculator() {
         </p>
 
         <div style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 16, padding: "2.5rem" }}>
-          <form onSubmit={handleFreeScanSubmit} style={{ marginBottom: "1.5rem" }}>
-            <label style={{ fontFamily: "'Space Mono', monospace", fontSize: 12, color: "rgba(255,255,255,0.5)", display: "block", marginBottom: "0.75rem" }}>
-              FREE SCAN DOMAIN OR URL
-            </label>
-            <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
-              <input
-                type="text"
-                value={scanInput}
-                onChange={(e) => setScanInput(e.target.value)}
-                placeholder="example.com"
-                style={{
-                  flex: "1 1 280px",
-                  minWidth: 220,
-                  padding: "12px 14px",
-                  borderRadius: 8,
-                  border: "1px solid rgba(255,255,255,0.18)",
-                  background: "rgba(0,0,0,0.25)",
-                  color: "#fff",
-                  fontFamily: "'DM Sans', sans-serif",
-                  fontSize: 14,
-                }}
-              />
-              <button
-                type="submit"
-                disabled={scanLoading}
-                style={{
-                  padding: "12px 18px",
-                  borderRadius: 8,
-                  border: "1px solid rgba(0,255,136,0.35)",
-                  background: "rgba(0,255,136,0.08)",
-                  color: "#00ff88",
-                  fontFamily: "'Space Mono', monospace",
-                  fontSize: 12,
-                  fontWeight: 700,
-                  cursor: scanLoading ? "not-allowed" : "pointer",
-                  opacity: scanLoading ? 0.7 : 1,
-                }}
-              >
-                {scanLoading ? "Scanning..." : "Run Free Scan"}
-              </button>
-            </div>
-          </form>
-
-          {scanError && (
-            <div style={{ marginBottom: "1.25rem", padding: "10px 12px", borderRadius: 8, border: "1px solid rgba(255,120,120,0.4)", background: "rgba(255,60,60,0.07)", color: "rgba(255,210,210,0.95)", fontFamily: "'DM Sans', sans-serif", fontSize: 13 }}>
-              {scanError}
-            </div>
-          )}
-
-          {scanResult && (
-            <div style={{ marginBottom: "1.5rem", padding: "14px", borderRadius: 10, border: "1px solid rgba(0,255,136,0.2)", background: "rgba(0,255,136,0.05)", textAlign: "left" }}>
-              <div style={{ fontFamily: "'Space Mono', monospace", fontSize: 12, color: "#00ff88", marginBottom: "0.75rem" }}>SCAN RESULT</div>
-              <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 14, color: "rgba(255,255,255,0.82)", lineHeight: 1.7 }}>
-                <div><strong>scanId:</strong> {scanResult.scanId ?? "n/a"}</div>
-                <div><strong>domain:</strong> {scanResult.domain ?? "n/a"}</div>
-                <div><strong>riskScore:</strong> {scanResult.riskScore ?? scanResult.score ?? "n/a"}</div>
-                <div><strong>riskLevel:</strong> {scanResult.riskLevel ?? "n/a"}</div>
-                <div><strong>fakeSessions:</strong> {scanResult.fakeSessions ?? "n/a"}</div>
-                <div><strong>estimatedDailyWasteUsd:</strong> {scanResult.estimatedDailyWasteUsd ?? "n/a"}</div>
-                <div><strong>recommendation:</strong> {scanResult.recommendation ?? "n/a"}</div>
-              </div>
-            </div>
-          )}
-
           <div style={{ marginBottom: "2rem" }}>
             <label style={{ fontFamily: "'Space Mono', monospace", fontSize: 12, color: "rgba(255,255,255,0.5)", display: "block", marginBottom: "1rem" }}>
               DAILY AD SPEND: <span style={{ color: "#00ff88" }}>${spend.toLocaleString()}</span>
@@ -423,7 +437,7 @@ function Calculator() {
 
           <div style={{ marginTop: "1.5rem", padding: "1rem", background: "rgba(0,255,136,0.05)", border: "1px solid rgba(0,255,136,0.15)", borderRadius: 10 }}>
             <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 14, color: "rgba(255,255,255,0.6)" }}>
-              A $99 Quick Scan pays for itself if we find just <span style={{ color: "#00ff88", fontWeight: 700 }}>${(99 / waste).toFixed(1)} days</span> of waste.
+              Results begin in minutes. Full audit same day.
             </div>
           </div>
 
@@ -439,7 +453,7 @@ function Calculator() {
             onMouseEnter={e => { e.currentTarget.style.background = "#00ffaa"; e.currentTarget.style.boxShadow = "0 8px 30px rgba(0,255,136,0.25)"; }}
             onMouseLeave={e => { e.currentTarget.style.background = "#00ff88"; e.currentTarget.style.boxShadow = "none"; }}
           >
-            Stop the Bleed — Run a Quick Scan →
+            Quick Revenue Audit — $99
           </a>
         </div>
       </div>
@@ -450,11 +464,11 @@ function Calculator() {
 function Pricing() {
   const plans = [
     {
-      name: "Quick Scan",
+      name: "Quick Revenue Audit",
       price: "$99",
       period: "one-time",
       tag: null,
-      desc: "Right now. One report. Find out if you have a problem and exactly what it's costing you.",
+      desc: "Find fake traffic, wasted ad spend, and revenue leaks quickly. Results begin in minutes. Full audit same day.",
       features: [
         "Instant automated scan",
         "Bot traffic detection report",
@@ -462,18 +476,18 @@ function Pricing() {
         "PDF delivered to your inbox",
         "Results in minutes",
       ],
-      cta: "Run My Scan",
+      cta: "Quick Revenue Audit — $99",
       href: STRIPE.quickScan,
       highlight: false,
     },
     {
-      name: "Revenue Audit",
+      name: "Revenue Recovery Audit",
       price: "$297",
       period: "one-time",
       tag: "Most Popular",
-      desc: "30 days of monitoring. Full picture. Every detail on where they come from, what they cost you, and exactly how to stop them.",
+      desc: "Tracking analysis, revenue leak analysis, traffic breakdown, and a practical recovery roadmap.",
       features: [
-        "Everything in Quick Scan",
+        "Everything in Quick Revenue Audit",
         "30-day monitoring period",
         "Bot origin & fingerprint analysis",
         "Ad spend, hosting & ops cost breakdown",
@@ -481,26 +495,26 @@ function Pricing() {
         "Block rules & ad platform settings",
         "Full PDF audit report",
       ],
-      cta: "Get My Audit",
+      cta: "Revenue Recovery Audit — $297",
       href: STRIPE.revenueAudit,
       highlight: true,
     },
     {
-      name: "Revenue Shield",
-      price: "$497",
+      name: "Revenue Shield Beta",
+      price: "$297",
       period: "/month",
-      tag: "3rd Month Free",
-      desc: "Your always-on revenue bodyguard. Never think about bots again.",
+      tag: "Founders Beta",
+      desc: "Founders Beta pricing locked for life.",
       features: [
-        "Everything in Revenue Audit",
+        "Everything in Revenue Recovery Audit",
         "Continuous 24/7 monitoring",
         "Monthly reports, auto-delivered",
         "Unlimited on-demand scans",
         "Real-time threat alerts",
         "Updated block rules as bots evolve",
-        "3rd month completely free",
+        "Founders Beta pricing locked for life",
       ],
-      cta: "Protect My Revenue",
+      cta: "Revenue Shield Beta — $297/mo",
       href: STRIPE.revenueShield,
       highlight: false,
     },
@@ -595,11 +609,11 @@ function Pricing() {
 function FAQ() {
   const [open, setOpen] = useState(null);
   const items = [
-    { q: "How fast do I get my Quick Scan report?", a: "The scan runs automatically after purchase. Your PDF report is delivered to your email within minutes — no waiting, no manual process." },
+    { q: "How fast do I get my Quick Revenue Audit report?", a: "Results begin in minutes. Full audit same day." },
     { q: "What do I need to provide?", a: "Just your website URL and email address at checkout. No code installs, no API keys, no technical setup required." },
     { q: "What if I don't have paid ads running?", a: "Bots still cost you. Fake signups, server load, analytics pollution, and CRM spam affect every site. The scan detects all of it." },
-    { q: "Is the Revenue Audit a subscription?", a: "No. The $297 Revenue Audit is a one-time payment for a 30-day monitoring period plus a full remediation report. No recurring charges." },
-    { q: "Can I cancel Revenue Shield anytime?", a: "Yes. Cancel anytime with no fees or penalties. Your 3rd month free is applied automatically at the end of your 2nd billing cycle." },
+    { q: "Is the Revenue Recovery Audit a subscription?", a: "No. The $297 Revenue Recovery Audit is a one-time payment with tracking analysis, revenue leak analysis, traffic breakdown, and a recovery roadmap." },
+    { q: "Can I cancel Revenue Shield Beta anytime?", a: "Yes. Revenue Shield Beta is month-to-month at $297/mo with founders pricing locked for life while enrolled." },
     { q: "What if I don't find any bot traffic?", a: "That's a win — you now have proof your traffic is clean. And you have the baseline data to detect if that changes in the future." },
   ];
 
@@ -656,7 +670,7 @@ function CTA() {
           Bots Don't Take<br />Days Off.
         </h2>
         <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 16, color: "rgba(255,255,255,0.5)", marginBottom: "2.5rem", lineHeight: 1.7 }}>
-          Every day you wait is another day of wasted spend, inflated costs, and bad data. A $99 scan takes minutes and pays for itself fast.
+          Every day you wait is another day of wasted spend, fake traffic, and revenue leaks. Results begin in minutes. Full audit same day.
         </p>
         <a href={STRIPE.quickScan} target="_blank" rel="noopener noreferrer"
           style={{
@@ -670,7 +684,7 @@ function CTA() {
           onMouseEnter={e => { e.currentTarget.style.background = "#00ffaa"; e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 40px rgba(0,255,136,0.3)"; }}
           onMouseLeave={e => { e.currentTarget.style.background = "#00ff88"; e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "none"; }}
         >
-          Run a $99 Quick Scan Now →
+          Quick Revenue Audit — $99
         </a>
       </div>
     </section>
@@ -691,11 +705,18 @@ function Footer() {
       margin: "0 auto",
     }}>
       <div style={{ fontFamily: "'Space Mono', monospace", fontSize: 13, color: "rgba(255,255,255,0.3)" }}>
-        © 2025 BotGuard<span style={{ color: "#00ff88" }}>Pro</span>
+        © 2026 BotGuard Pro
       </div>
-      <div style={{ display: "flex", gap: "1.5rem" }}>
-        {[["Quick Scan", STRIPE.quickScan], ["Revenue Audit", STRIPE.revenueAudit], ["Revenue Shield", STRIPE.revenueShield]].map(([label, href]) => (
+      <div style={{ display: "flex", gap: "1.5rem", flexWrap: "wrap" }}>
+        {[["Quick Revenue Audit — $99", STRIPE.quickScan], ["Revenue Recovery Audit — $297", STRIPE.revenueAudit], ["Revenue Shield Beta — $297/mo", STRIPE.revenueShield]].map(([label, href]) => (
           <a key={label} href={href} target="_blank" rel="noopener noreferrer"
+            style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: "rgba(255,255,255,0.4)", textDecoration: "none", transition: "color 0.2s" }}
+            onMouseEnter={e => e.target.style.color = "#00ff88"}
+            onMouseLeave={e => e.target.style.color = "rgba(255,255,255,0.4)"}
+          >{label}</a>
+        ))}
+        {[["Privacy Policy", "/privacy"], ["Terms", "/terms"], ["Cookie Policy", "/cookies"], ["Contact", "/contact"]].map(([label, href]) => (
+          <a key={label} href={href}
             style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: "rgba(255,255,255,0.4)", textDecoration: "none", transition: "color 0.2s" }}
             onMouseEnter={e => e.target.style.color = "#00ff88"}
             onMouseLeave={e => e.target.style.color = "rgba(255,255,255,0.4)"}
@@ -709,7 +730,99 @@ function Footer() {
   );
 }
 
+function LegalFooter() {
+  return (
+    <footer style={{ borderTop: "1px solid rgba(255,255,255,0.06)", padding: "2rem", marginTop: "3rem" }}>
+      <div style={{ maxWidth: 900, margin: "0 auto", display: "flex", gap: "1.25rem", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap" }}>
+        <div style={{ fontFamily: "'Space Mono', monospace", fontSize: 13, color: "rgba(255,255,255,0.3)" }}>
+          © 2026 BotGuard Pro
+        </div>
+        <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
+          {[["Privacy Policy", "/privacy"], ["Terms", "/terms"], ["Cookie Policy", "/cookies"], ["Contact", "/contact"]].map(([label, href]) => (
+            <a key={label} href={href} style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: "rgba(255,255,255,0.45)", textDecoration: "none" }}>{label}</a>
+          ))}
+        </div>
+      </div>
+    </footer>
+  );
+}
+
+function LegalLayout({ title, children }) {
+  return (
+    <>
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;700;900&family=Space+Mono:wght@400;700&family=DM+Sans:wght@400;500;600;700&display=swap');
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body { background: #05070a; color: #fff; -webkit-font-smoothing: antialiased; }
+      `}</style>
+      <main style={{ minHeight: "100vh", padding: "2rem" }}>
+        <div style={{ maxWidth: 900, margin: "0 auto" }}>
+          <a href="/" style={{ display: "inline-block", marginBottom: "1.25rem", color: "#00ff88", textDecoration: "none", fontFamily: "'Space Mono', monospace", fontSize: 13 }}>← Back to Home</a>
+          <h1 style={{ fontFamily: "'Syne', sans-serif", fontSize: "clamp(2rem, 4vw, 2.8rem)", marginBottom: "1rem" }}>{title}</h1>
+          <div style={{ fontFamily: "'DM Sans', sans-serif", color: "rgba(255,255,255,0.75)", lineHeight: 1.8, display: "grid", gap: "1rem" }}>
+            {children}
+          </div>
+        </div>
+      </main>
+      <LegalFooter />
+    </>
+  );
+}
+
+function PrivacyPage() {
+  return (
+    <LegalLayout title="Privacy Policy">
+      <p>BotGuard Pro collects website domain or URL inputs when you run a scan. We use this data to generate your traffic risk analysis, fake-session estimates, and recommendations.</p>
+      <p>If you provide contact details, such as your email, we use them to deliver reports and support responses. We only keep data needed to operate and improve the service.</p>
+      <p>We may use basic analytics and cookies to understand page performance and improve the product experience. Stripe handles checkout and payment processing directly on their infrastructure.</p>
+      <p>BotGuard Pro does not sell your personal data. Access is limited to team members and service providers needed to run the platform.</p>
+      <p>You can request access, correction, or deletion of your submitted data by emailing <a href="mailto:info@botguardpro.com" style={{ color: "#00ff88" }}>info@botguardpro.com</a>.</p>
+    </LegalLayout>
+  );
+}
+
+function TermsPage() {
+  return (
+    <LegalLayout title="Terms of Service">
+      <p>BotGuard Pro provides traffic analysis and audit outputs for informational and operational decision support. Results are estimates based on available data and may vary by traffic source, campaign setup, and implementation.</p>
+      <p>We do not guarantee specific business outcomes, savings, or revenue recovery. You remain responsible for final implementation and decisions made from reports.</p>
+      <p>To the maximum extent allowed by law, BotGuard Pro is not liable for indirect or consequential losses, including lost revenue, lost profits, or campaign performance changes.</p>
+      <p>One-time audits are billed once at checkout. Recurring plans renew automatically until canceled; cancellation stops future renewals and does not retroactively refund completed billing periods.</p>
+      <p>By using BotGuard Pro, you agree to these terms and to using the service in compliance with applicable law.</p>
+    </LegalLayout>
+  );
+}
+
+function CookiesPage() {
+  return (
+    <LegalLayout title="Cookie Policy">
+      <p>BotGuard Pro uses a minimal set of cookies and similar technologies to operate the site and improve performance.</p>
+      <p><strong>Functional cookies:</strong> help core site behavior such as session continuity, route handling, and basic usability.</p>
+      <p><strong>Analytics cookies:</strong> help us understand page usage, scan flow engagement, and overall site performance trends.</p>
+      <p><strong>Payment-related cookies:</strong> Stripe may set cookies during checkout to process payments securely and prevent fraud.</p>
+      <p>You can manage cookies through your browser settings. Disabling some cookies may impact parts of the site or checkout experience.</p>
+    </LegalLayout>
+  );
+}
+
+function ContactPage() {
+  return (
+    <LegalLayout title="Contact">
+      <p>Need help with a scan, audit delivery, or account question?</p>
+      <p>Email support: <a href="mailto:info@botguardpro.com" style={{ color: "#00ff88" }}>info@botguardpro.com</a></p>
+      <p>Typical support response time is within one business day.</p>
+    </LegalLayout>
+  );
+}
+
 export default function App() {
+  const path = window.location.pathname.toLowerCase().replace(/\/+$/, "") || "/";
+  if (path === "/privacy") return <PrivacyPage />;
+  if (path === "/terms") return <TermsPage />;
+  if (path === "/cookies") return <CookiesPage />;
+  if (path === "/contact") return <ContactPage />;
+
   return (
     <>
       <style>{`
