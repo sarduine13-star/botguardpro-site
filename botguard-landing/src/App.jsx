@@ -1,5 +1,4 @@
-const API_BASE = import.meta.env.VITE_API_BASE;
-import { useState, useEffect, useRef } from "react";
+﻿import { useState, useEffect, useRef } from "react";
 
 const STRIPE = {
   quickScan: "https://buy.stripe.com/dRmaEX5pk31eb4sg1hcfK0i",
@@ -43,10 +42,6 @@ function useScrollY() {
     return () => window.removeEventListener("scroll", h);
   }, []);
   return y;
-}
-
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 // Live ticker of "attacks"
@@ -154,7 +149,7 @@ function Nav() {
           }}
             onMouseEnter={e => { e.currentTarget.style.background = "#00ffaa"; e.currentTarget.style.transform = "translateY(-1px)"; }}
             onMouseLeave={e => { e.currentTarget.style.background = "#00ff88"; e.currentTarget.style.transform = "translateY(0)"; }}
-          >Scan My Site →</a>
+          >Scan My Site â†’</a>
         </div>
       </nav>
     </>
@@ -190,20 +185,7 @@ function StatsBar() {
 }
 
 function Hero() {
-  const FREE_AUDITS_STORAGE_KEY = "botguard_free_audits_remaining";
-  const FREE_AUDITS_TOTAL = 25;
-  const INITIAL_FREE_AUDITS_REMAINING = 13;
   const [typed, setTyped] = useState("");
-  const [showAuditModal, setShowAuditModal] = useState(false);
-  const [auditUrl, setAuditUrl] = useState("");
-  const [auditEmail, setAuditEmail] = useState("");
-  const [auditLoading, setAuditLoading] = useState(false);
-  const [auditError, setAuditError] = useState(null);
-  const [auditSuccessEmail, setAuditSuccessEmail] = useState("");
-  const [leadError, setLeadError] = useState("");
-  const [freeAuditsRemaining, setFreeAuditsRemaining] = useState(INITIAL_FREE_AUDITS_REMAINING);
-  const freeAuditsExhausted = freeAuditsRemaining <= 0;
-
   const full = "yourdomain.com";
   useEffect(() => {
     let i = 0;
@@ -214,111 +196,6 @@ function Hero() {
     }, 80);
     return () => clearInterval(t);
   }, []);
-
-  useEffect(() => {
-    try {
-      const storedValue = window.localStorage.getItem(FREE_AUDITS_STORAGE_KEY);
-      if (storedValue === null) {
-        window.localStorage.setItem(FREE_AUDITS_STORAGE_KEY, String(INITIAL_FREE_AUDITS_REMAINING));
-        setFreeAuditsRemaining(INITIAL_FREE_AUDITS_REMAINING);
-        return;
-      }
-
-      const parsed = Number.parseInt(storedValue, 10);
-      const normalized = Number.isNaN(parsed)
-        ? INITIAL_FREE_AUDITS_REMAINING
-        : Math.min(FREE_AUDITS_TOTAL, Math.max(0, parsed));
-
-      setFreeAuditsRemaining(normalized);
-      if (parsed !== normalized) {
-        window.localStorage.setItem(FREE_AUDITS_STORAGE_KEY, String(normalized));
-      }
-    } catch {
-      setFreeAuditsRemaining(INITIAL_FREE_AUDITS_REMAINING);
-    }
-  }, []);
-
-  function decrementFreeAuditsRemaining() {
-    setFreeAuditsRemaining((prev) => {
-      const next = Math.max(0, prev - 1);
-      try {
-        window.localStorage.setItem(FREE_AUDITS_STORAGE_KEY, String(next));
-      } catch {
-        // Ignore storage write errors and keep in-memory state.
-      }
-      return next;
-    });
-  }
-
-  async function handleStartFreeAudit(e) {
-    e.preventDefault();
-    if (freeAuditsExhausted) {
-      setAuditError("Free audits are exhausted.");
-      return;
-    }
-
-    const domain = auditUrl.trim();
-    const email = auditEmail.trim();
-    if (!domain || !email) {
-      setAuditError("Please enter both your website URL and email address.");
-      return;
-    }
-
-    setAuditLoading(true);
-    setAuditError(null);
-    setLeadError("");
-
-    try {
-      const scanRes = await fetch(API_BASE + "/scan", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          domain,
-          email,
-        }),
-      });
-
-      const scanData = await scanRes.json().catch(() => ({}));
-
-      if (!scanRes.ok || !scanData.scan_id) {
-        throw new Error(scanData.message || "Could not start your audit.");
-      }
-
-      const scanId = scanData.scan_id;
-
-      const leadRes = await fetch(API_BASE + "/leads", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email,
-          domain,
-          scan_id: scanId,
-          source: "free_audit_hero",
-        }),
-      });
-      if (!leadRes.ok) {
-        const leadBody = await leadRes.text();
-        console.error("Leads endpoint error:", leadRes.status, leadBody);
-        throw new Error("Your audit completed, but we could not send the follow-up email right now. Please try again in a moment.");
-      }
-
-      decrementFreeAuditsRemaining();
-      setAuditSuccessEmail(email);
-    } catch (err) {
-      setAuditError(err.message || "Something went wrong starting your audit. Please try again.");
-    } finally {
-      setAuditLoading(false);
-    }
-  }
-
-  function closeAuditModal() {
-    if (auditLoading) return;
-    setShowAuditModal(false);
-    setAuditUrl("");
-    setAuditEmail("");
-    setAuditError(null);
-    setAuditSuccessEmail("");
-  }
 
   return (
     <section style={{ minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "100px 2rem 60px", textAlign: "center", position: "relative", overflow: "hidden" }}>
@@ -355,54 +232,25 @@ function Hero() {
           color: "rgba(255,255,255,0.55)", maxWidth: 600, margin: "0 auto 2.5rem", lineHeight: 1.7,
           animation: "fadeInUp 0.7s ease 0.35s both",
         }}>
-          Free Bot Traffic Audit for the first 25 businesses. We'll show you whether fake, low-quality, or automated traffic is wasting ad budget, polluting leads, and corrupting your conversion data.
+          Bots are draining your ad spend, inflating your costs, and poisoning your data — right now. BotGuard Pro tells you exactly where, who, how much, and what to do about it.
         </p>
 
         {/* CTA group */}
-        <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap", marginBottom: "0.75rem", animation: "fadeInUp 0.7s ease 0.5s both" }}>
-          <button
-            type="button"
-            onClick={(e) => {
-              if (freeAuditsExhausted) return;
-              e.preventDefault();
-              e.stopPropagation();
-              setShowAuditModal(true);
-            }}
-            disabled={freeAuditsExhausted}
-            style={{
-              background: "#00ff88",
-              color: "#000",
-              padding: "18px 36px",
-              borderRadius: 8,
-              fontSize: 15,
-              fontWeight: 800,
-              textDecoration: "none",
-              fontFamily: "'Space Mono', monospace",
-              transition: "all 0.2s",
-              display: "inline-flex",
-              alignItems: "center",
-              gap: 8,
-              boxShadow: "0 0 40px rgba(0,255,136,0.2)",
-              border: "none",
-              cursor: freeAuditsExhausted ? "not-allowed" : "pointer",
-              opacity: freeAuditsExhausted ? 0.5 : 1,
-            }}
-            onMouseEnter={e => {
-              if (freeAuditsExhausted) return;
-              e.currentTarget.style.background = "#00ffaa";
-              e.currentTarget.style.transform = "translateY(-2px)";
-              e.currentTarget.style.boxShadow = "0 8px 40px rgba(0,255,136,0.4)";
-            }}
-            onMouseLeave={e => {
-              if (freeAuditsExhausted) return;
-              e.currentTarget.style.background = "#00ff88";
-              e.currentTarget.style.transform = "translateY(0)";
-              e.currentTarget.style.boxShadow = "0 0 40px rgba(0,255,136,0.2)";
-            }}
+        <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap", marginBottom: "2rem", animation: "fadeInUp 0.7s ease 0.5s both" }}>
+          <a href={STRIPE.quickScan} target="_blank" rel="noopener noreferrer" style={{
+            background: "#00ff88", color: "#000", padding: "18px 36px", borderRadius: 8,
+            fontSize: 15, fontWeight: 800, textDecoration: "none", fontFamily: "'Space Mono', monospace",
+            transition: "all 0.2s", display: "inline-flex", alignItems: "center", gap: 8,
+            boxShadow: "0 0 40px rgba(0,255,136,0.2)",
+          }}
+            onMouseEnter={e => { e.currentTarget.style.background = "#00ffaa"; e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 8px 40px rgba(0,255,136,0.4)"; }}
+            onMouseLeave={e => { e.currentTarget.style.background = "#00ff88"; e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 0 40px rgba(0,255,136,0.2)"; }}
           >
-            Claim My Free Audit
-          </button>
-          <a href="#pricing" style={{
+            ðŸ” Scan My Site for $99
+          </a>
+          <button
+            onClick={() => document.getElementById("free-audit")?.scrollIntoView({ behavior: "smooth", block: "start" })}
+            style={{
             background: "transparent", color: "rgba(255,255,255,0.7)", padding: "18px 32px", borderRadius: 8,
             fontSize: 14, fontWeight: 600, textDecoration: "none", fontFamily: "'DM Sans', sans-serif",
             border: "1px solid rgba(255,255,255,0.15)", transition: "all 0.2s",
@@ -411,18 +259,6 @@ function Hero() {
             onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.15)"; e.currentTarget.style.color = "rgba(255,255,255,0.7)"; }}
           >View All Plans</a>
         </div>
-        <div style={{ fontFamily: "'Space Mono', monospace", fontSize: 11, color: "rgba(255,255,255,0.5)", marginBottom: "2rem" }}>
-          {`Free audits remaining: ${freeAuditsRemaining} of 25`}
-        </div>
-        {freeAuditsExhausted && (
-          <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: "#ff7777", marginBottom: "1.25rem", lineHeight: 1.6 }}>
-            Free audits are exhausted. Please use one of the paid audit plans below.
-          </p>
-        )}
-
-        <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: "rgba(255,255,255,0.45)", marginBottom: "1.5rem", lineHeight: 1.6 }}>
-          Limited to 25 businesses. If we find a real problem, we'll show you what it's costing you and how protection works.
-        </p>
 
         {/* Trust signals */}
         <div style={{ display: "flex", gap: "1.5rem", justifyContent: "center", flexWrap: "wrap", animation: "fadeInUp 0.7s ease 0.65s both" }}>
@@ -436,341 +272,134 @@ function Hero() {
           <LiveTicker />
         </div>
       </div>
-      {showAuditModal && (
-        <div
-          style={{
-            position: "fixed",
-            inset: 0,
-            background: "rgba(0,0,0,0.75)",
-            zIndex: 9999,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            padding: "1.5rem",
-          }}
-        >
-          <div
-            style={{
-              maxWidth: 420,
-              width: "100%",
-              background: "rgba(5,7,10,0.95)",
-              borderRadius: 16,
-              border: "1px solid rgba(255,255,255,0.1)",
-              boxShadow: "0 20px 60px rgba(0,0,0,0.7)",
-              padding: "1.75rem",
-              position: "relative",
-            }}
-          >
-            <button
-              onClick={closeAuditModal}
-              style={{
-                position: "absolute",
-                top: 12,
-                right: 12,
-                background: "transparent",
-                border: "none",
-                color: "rgba(255,255,255,0.6)",
-                cursor: auditLoading ? "not-allowed" : "pointer",
-                fontSize: 18,
-                lineHeight: 1,
-              }}
-              disabled={auditLoading}
-              aria-label="Close free audit"
-            >
-              ×
-            </button>
-            {!auditSuccessEmail ? (
-              <>
-                <div style={{ marginBottom: "1.25rem" }}>
-                  <div style={{ fontFamily: "'Space Mono', monospace", fontSize: 11, color: "#ff6633", letterSpacing: "2px", marginBottom: "0.5rem" }}>
-                    FREE BOT TRAFFIC AUDIT
-                  </div>
-                  <h3 style={{ fontFamily: "'Syne', sans-serif", fontSize: "1.4rem", fontWeight: 800, color: "#fff", marginBottom: "0.25rem" }}>
-                    Run My Free Audit
-                  </h3>
-                  <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: "rgba(255,255,255,0.6)" }}>
-                    We'll run a full audit and email you the PDF report.
-                  </p>
-                </div>
-                {freeAuditsExhausted && (
-                  <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: "#ff7777", marginBottom: "0.75rem" }}>
-                    Free audits are exhausted. This form is disabled.
-                  </div>
-                )}
-                <form onSubmit={handleStartFreeAudit}>
-                  <div style={{ marginBottom: "0.9rem", textAlign: "left" }}>
-                    <label style={{ display: "block", fontFamily: "'Space Mono', monospace", fontSize: 11, color: "rgba(255,255,255,0.6)", marginBottom: 6 }}>
-                      Website URL
-                    </label>
-                    <input
-                      type="text"
-                      value={auditUrl}
-                      disabled={auditLoading || freeAuditsExhausted}
-                      onChange={e => setAuditUrl(e.target.value)}
-                      placeholder="https://yourdomain.com"
-                      style={{
-                        width: "100%",
-                        padding: "10px 12px",
-                        borderRadius: 8,
-                        border: "1px solid rgba(255,255,255,0.15)",
-                        background: "rgba(0,0,0,0.6)",
-                        color: "#fff",
-                        fontFamily: "'Space Mono', monospace",
-                        fontSize: 13,
-                        outline: "none",
-                      }}
-                    />
-                  </div>
-                  <div style={{ marginBottom: "1rem", textAlign: "left" }}>
-                    <label style={{ display: "block", fontFamily: "'Space Mono', monospace", fontSize: 11, color: "rgba(255,255,255,0.6)", marginBottom: 6 }}>
-                      Email address
-                    </label>
-                    <input
-                      type="email"
-                      value={auditEmail}
-                      disabled={auditLoading || freeAuditsExhausted}
-                      onChange={e => setAuditEmail(e.target.value)}
-                      placeholder="you@company.com"
-                      style={{
-                        width: "100%",
-                        padding: "10px 12px",
-                        borderRadius: 8,
-                        border: "1px solid rgba(255,255,255,0.15)",
-                        background: "rgba(0,0,0,0.6)",
-                        color: "#fff",
-                        fontFamily: "'Space Mono', monospace",
-                        fontSize: 13,
-                        outline: "none",
-                      }}
-                    />
-                  </div>
-                  {auditError && (
-                    <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: "#ff6666", marginBottom: "0.75rem" }}>
-                      {auditError}
-                    </div>
-                  )}
-                  <button
-                    type="submit"
-                    disabled={auditLoading || freeAuditsExhausted}
-                    style={{
-                      width: "100%",
-                      padding: "12px 16px",
-                      borderRadius: 8,
-                      border: "none",
-                      background: (auditLoading || freeAuditsExhausted) ? "rgba(255,100,50,0.5)" : "linear-gradient(135deg, #ff6633, #ff4444)",
-                      color: "#fff",
-                      fontFamily: "'Space Mono', monospace",
-                      fontSize: 13,
-                      fontWeight: 700,
-                      cursor: (auditLoading || freeAuditsExhausted) ? "not-allowed" : "pointer",
-                      boxShadow: "0 0 20px rgba(255,80,50,0.3)",
-                      transition: "all 0.2s",
-                    }}
-                  >
-                    {freeAuditsExhausted ? "Free Audits Exhausted" : (auditLoading ? "Starting your audit..." : "Start My Free Audit")}
-                  </button>
-                  <div style={{ marginTop: "0.75rem", fontFamily: "'DM Sans', sans-serif", fontSize: 11, color: "rgba(255,255,255,0.4)" }}>
-                    No payment required. Your full PDF report will be emailed when the audit completes.
-                  </div>
-                </form>
-              </>
-            ) : (
-              <div style={{ textAlign: "center", paddingTop: "0.5rem", paddingBottom: "0.25rem" }}>
-                <div style={{ fontSize: 32, marginBottom: "0.75rem" }}>✅</div>
-                <h3 style={{ fontFamily: "'Syne', sans-serif", fontSize: "1.4rem", fontWeight: 800, color: "#fff", marginBottom: "0.5rem" }}>
-                  Your audit is running
-                </h3>
-                <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: "rgba(255,255,255,0.7)", lineHeight: 1.7 }}>
-                  Your audit is running — you'll receive the full report at{" "}
-                  <span style={{ color: "#00ff88" }}>{auditSuccessEmail}</span> within 10 minutes.
-                </p>
-                {leadError && (
-                  <div className="mt-3 text-sm text-yellow-300">
-                    {leadError}
-                  </div>
-                )}
-                <button
-                  type="button"
-                  onClick={closeAuditModal}
-                  style={{
-                    marginTop: "1.25rem",
-                    padding: "10px 18px",
-                    borderRadius: 8,
-                    border: "1px solid rgba(255,255,255,0.25)",
-                    background: "transparent",
-                    color: "#fff",
-                    fontFamily: "'Space Mono', monospace",
-                    fontSize: 12,
-                    cursor: "pointer",
-                  }}
-                >
-                  Close
-                </button>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
     </section>
   );
 }
 
-const SCAN_API = API_BASE + "/score";
 
-function Scanner() {
-  const [domain, setDomain] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState(null);
-  const [error, setError] = useState(null);
-
-  async function handleScan() {
-    const trimmed = domain.trim();
-    if (!trimmed) return;
-    setLoading(true);
-    setError(null);
-    setResult(null);
-    try {
-      const res = await fetch(SCAN_API, {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ url: trimmed }),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || "Scan failed");
-      setResult(data);
-    } catch (e) {
-      setError(e.message || "Something went wrong");
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  const riskScore =
-    result?.risk_score ??
-    result?.riskScore ??
-    result?.score ??
-    null;
-
-  const botPercent =
-    result?.bot_percentage ??
-    result?.botPercent ??
-    result?.bot_rate ??
-    result?.botRate ??
-    result?.traffic_distortion_percent ??
-    result?.traffic_distortion ??
-    result?.distortion ??
-    result?.trafficDistortion ??
-    0;
-
-  const wastedSpend =
-    result?.estimated_waste ??
-    result?.estimated_wasted_ad_spend ??
-    result?.wasted_ad_spend ??
-    result?.estimatedWastedAdSpend ??
-    0;
-
+function FoundersBeta() {
   return (
-    <section style={{ padding: "60px 2rem 80px", background: "rgba(255,255,255,0.01)", borderTop: "1px solid rgba(255,255,255,0.05)", borderBottom: "1px solid rgba(255,50,50,0.08)" }}>
-      <div style={{ maxWidth: 560, margin: "0 auto" }}>
-        <div style={{ textAlign: "center", marginBottom: "2rem" }}>
-          <div style={{ fontFamily: "'Space Mono', monospace", fontSize: 11, color: "#ff6633", letterSpacing: "2px", marginBottom: "0.75rem" }}>FREE SITE SCAN</div>
-          <h2 style={{ fontFamily: "'Syne', sans-serif", fontSize: "clamp(1.6rem, 3vw, 2.2rem)", fontWeight: 900, color: "#fff", letterSpacing: "-1px" }}>See Your Risk — Free</h2>
+    <section style={{
+      padding: "70px 20px",
+      background: "linear-gradient(180deg, #08111f 0%, #0b1324 100%)",
+      borderTop: "1px solid rgba(0,255,136,0.12)",
+      borderBottom: "1px solid rgba(0,255,136,0.12)"
+    }}>
+      <div style={{ maxWidth: 900, margin: "0 auto", textAlign: "center" }}>
+        <div style={{
+          display: "inline-block",
+          padding: "6px 12px",
+          border: "1px solid rgba(0,255,136,0.25)",
+          borderRadius: "999px",
+          color: "#00ff88",
+          fontSize: 12,
+          fontWeight: 800,
+          letterSpacing: "0.18em",
+          marginBottom: "16px",
+          fontFamily: "'Space Mono', monospace"
+        }}>
+          FOUNDERS BETA â€¢ LIMITED ACCESS
         </div>
 
-        {!result ? (
-          <div style={{ background: "rgba(0,0,0,0.4)", border: "1px solid rgba(255,80,50,0.2)", borderRadius: 12, padding: "2rem" }}>
-            <div style={{ display: "flex", gap: 10, marginBottom: "1rem", flexWrap: "wrap" }}>
-              <input
-                type="text"
-                placeholder="yourdomain.com"
-                value={domain}
-                onChange={e => setDomain(e.target.value)}
-                onKeyDown={e => e.key === "Enter" && handleScan()}
-                style={{
-                  flex: 1, minWidth: 200, padding: "14px 18px", borderRadius: 8,
-                  background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)",
-                  fontFamily: "'Space Mono', monospace", fontSize: 14, color: "#fff",
-                  outline: "none", transition: "border-color 0.2s",
-                }}
-                onFocus={e => e.target.style.borderColor = "rgba(255,100,50,0.4)"}
-                onBlur={e => e.target.style.borderColor = "rgba(255,255,255,0.1)"}
-              />
-              <button
-                onClick={handleScan}
-                disabled={loading || !domain.trim()}
-                style={{
-                  padding: "14px 24px", borderRadius: 8, background: loading ? "rgba(255,100,50,0.4)" : "linear-gradient(135deg, #ff6633, #ff4444)",
-                  color: "#fff", fontFamily: "'Space Mono', monospace", fontSize: 13, fontWeight: 700,
-                  border: "none", cursor: loading ? "not-allowed" : "pointer", whiteSpace: "nowrap",
-                  transition: "all 0.2s", boxShadow: "0 0 20px rgba(255,80,50,0.2)",
-                }}
-                onMouseEnter={e => { if (!loading) { e.currentTarget.style.transform = "translateY(-1px)"; e.currentTarget.style.boxShadow = "0 4px 24px rgba(255,80,50,0.35)"; } }}
-                onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 0 20px rgba(255,80,50,0.2)"; }}
-              >
-                {loading ? "Analyzing traffic patterns..." : "Scan My Site Free"}
-              </button>
-            </div>
-            {error && (
-              <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: "#ff6666", marginTop: "0.75rem" }}>{error}</div>
-            )}
-          </div>
-        ) : (
-          <div style={{
-            background: "rgba(0,0,0,0.4)", border: "1px solid rgba(255,80,50,0.25)", borderRadius: 12,
-            overflow: "hidden", boxShadow: "0 0 40px rgba(255,50,50,0.06)",
-          }}>
-            <div style={{ padding: "1.75rem", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))", gap: "1rem", marginBottom: "1rem" }}>
-                <div style={{ background: "rgba(255,50,50,0.08)", border: "1px solid rgba(255,80,80,0.2)", borderRadius: 10, padding: "1.25rem" }}>
-                  <div style={{ fontFamily: "'Space Mono', monospace", fontSize: 10, color: "rgba(255,150,100,0.9)", marginBottom: "0.4rem", letterSpacing: "1px" }}>RISK SCORE</div>
-                  <div style={{ fontFamily: "'Syne', sans-serif", fontSize: "1.8rem", fontWeight: 900, color: "#ff6633" }}>
-                    {riskScore !== null ? `${riskScore}/100` : "—"}
-                  </div>
-                </div>
-                <div style={{ background: "rgba(255,50,50,0.08)", border: "1px solid rgba(255,80,80,0.2)", borderRadius: 10, padding: "1.25rem" }}>
-                  <div style={{ fontFamily: "'Space Mono', monospace", fontSize: 10, color: "rgba(255,150,100,0.9)", marginBottom: "0.4rem", letterSpacing: "1px" }}>BOT TRAFFIC</div>
-                  <div style={{ fontFamily: "'Syne', sans-serif", fontSize: "1.8rem", fontWeight: 900, color: "#ff6633" }}>{botPercent}%</div>
-                </div>
-                <div style={{ background: "rgba(255,50,50,0.08)", border: "1px solid rgba(255,80,80,0.2)", borderRadius: 10, padding: "1.25rem" }}>
-                  <div style={{ fontFamily: "'Space Mono', monospace", fontSize: 10, color: "rgba(255,150,100,0.9)", marginBottom: "0.4rem", letterSpacing: "1px" }}>EST. WASTED AD SPEND</div>
-                  <div style={{ fontFamily: "'Syne', sans-serif", fontSize: "1.8rem", fontWeight: 900, color: "#ff4466" }}>${Number(wastedSpend).toLocaleString()}/month</div>
-                </div>
-              </div>
-              <div style={{
-                background: "rgba(0,0,0,0.3)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 10,
-                padding: "2rem", textAlign: "center", position: "relative", overflow: "hidden",
-              }}>
-                <div style={{ filter: "blur(8px)", pointerEvents: "none", userSelect: "none", opacity: 0.7 }}>
-                  <div style={{ fontFamily: "'Space Mono', monospace", fontSize: 11, color: "rgba(255,255,255,0.5)", marginBottom: "0.5rem" }}>Bot fingerprints · Origin map · Session logs · Risk breakdown</div>
-                  <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: "rgba(255,255,255,0.4)", lineHeight: 1.8 }}>Full forensic details are included in the paid Quick Scan report.</div>
-                </div>
-                <div style={{
-                  position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center",
-                  background: "rgba(5,7,10,0.6)", flexDirection: "column", gap: 8,
-                }}>
-                  <span style={{ fontFamily: "'Space Mono', monospace", fontSize: 12, color: "rgba(255,255,255,0.6)", letterSpacing: "1px" }}>🔒 Full forensic details locked</span>
-                </div>
-              </div>
-            </div>
-            <div style={{ padding: "1.25rem" }}>
-              <a
-                href={STRIPE.quickScan}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  display: "block", textAlign: "center", background: "#00ff88", color: "#000",
-                  padding: "16px", borderRadius: 8, fontSize: 14, fontWeight: 800,
-                  textDecoration: "none", fontFamily: "'Space Mono', monospace",
-                  transition: "all 0.2s", boxShadow: "0 0 20px rgba(0,255,136,0.2)",
-                }}
-                onMouseEnter={e => { e.currentTarget.style.background = "#00ffaa"; e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 8px 30px rgba(0,255,136,0.35)"; }}
-                onMouseLeave={e => { e.currentTarget.style.background = "#00ff88"; e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 0 20px rgba(0,255,136,0.2)"; }}
-              >
-                Unlock Full Quick Scan Report — $99
-              </a>
-            </div>
-          </div>
-        )}
+        <h2 style={{
+          fontFamily: "'Syne', sans-serif",
+          fontSize: "clamp(1.8rem, 3.5vw, 2.7rem)",
+          fontWeight: 900,
+          color: "#ffffff",
+          marginBottom: "16px",
+          letterSpacing: "-1px"
+        }}>
+          Join the BotGuard Pro Founders Beta
+        </h2>
+
+        <p style={{
+          maxWidth: 720,
+          margin: "0 auto 28px",
+          color: "rgba(255,255,255,0.72)",
+          fontSize: "1.05rem",
+          lineHeight: 1.7,
+          fontFamily: "'DM Sans', sans-serif"
+        }}>
+          Be among the first to uncover hidden revenue loss caused by fake traffic.
+          Free for a limited number of early adopters.
+        </p>
+
+        <div style={{
+          display: "inline-block",
+          textAlign: "left",
+          color: "#ffffff",
+          lineHeight: 1.9,
+          fontSize: "1rem",
+          marginBottom: "24px",
+          fontFamily: "'DM Sans', sans-serif"
+        }}>
+          <div>✓ Free Access for 90 Days</div>
+          <div>✓ Automated Bot Traffic Audit</div>
+          <div>✓ Real-Time Revenue Loss Insights</div>
+          <div>✓ AI-Powered Detection & Reporting</div>
+          <div>✓ Locked-In Lifetime Founder Pricing</div>
+          <div>✓ No Credit Card Required</div>
+        </div>
+
+        <div style={{
+          color: "#00ff88",
+          fontWeight: 800,
+          marginBottom: "24px",
+          fontSize: "1rem",
+          fontFamily: "'DM Sans', sans-serif"
+        }}>
+          Only 25 Founding Accounts Available
+        </div>
+
+        <div style={{
+          display: "flex",
+          gap: "14px",
+          justifyContent: "center",
+          flexWrap: "wrap",
+          marginBottom: "16px"
+        }}>
+          <button
+            onClick={() => document.getElementById("free-audit")?.scrollIntoView({ behavior: "smooth", block: "start" })}
+            style={{
+              display: "inline-block",
+              background: "linear-gradient(90deg, #00ff88 0%, #7dffb2 100%)",
+              color: "#03120d",
+              padding: "14px 26px",
+              borderRadius: "12px",
+              textDecoration: "none",
+              fontWeight: 800,
+              boxShadow: "0 0 24px rgba(0,255,136,0.22)",
+              fontFamily: "'DM Sans', sans-serif"
+            , border: "none", cursor: "pointer" }}
+          >
+            Claim Free Beta
+          </button>
+
+          <a
+            href="#free-audit"
+            style={{
+              display: "inline-block",
+              border: "1px solid rgba(0,255,136,0.55)",
+              color: "#00ff88",
+              padding: "14px 26px",
+              borderRadius: "12px",
+              textDecoration: "none",
+              fontWeight: 800,
+              background: "rgba(255,255,255,0.02)",
+              fontFamily: "'DM Sans', sans-serif"
+            , cursor: "pointer" }}
+          >
+            Run Free Audit
+          </button>
+        </div>
+
+        <div style={{
+          color: "rgba(255,255,255,0.5)",
+          fontSize: "0.92rem",
+          fontFamily: "'DM Sans', sans-serif"
+        }}>
+          Setup in under 10 minutes | Cancel anytime
+        </div>
       </div>
     </section>
   );
@@ -808,7 +437,7 @@ function SocialProof() {
                 </div>
                 <div>
                   <div style={{ fontFamily: "'Space Mono', monospace", fontSize: 12, color: "#fff", fontWeight: 700 }}>{name}</div>
-                  <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: "rgba(255,255,255,0.4)" }}>{role} · {company}</div>
+                  <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: "rgba(255,255,255,0.4)" }}>{role} Â· {company}</div>
                 </div>
               </div>
             </div>
@@ -837,12 +466,12 @@ function SocialProof() {
 
 function Problem() {
   const items = [
-    { icon: "💸", title: "Ad Spend Drained", desc: "Bots click your paid ads, burn your budget, and never convert. Google and Meta won't catch all of it — their incentive is your spend." },
-    { icon: "🖥️", title: "Hosting Costs Inflated", desc: "Fake traffic drives up your server bills, CDN costs, and compute usage every single month — invisibly." },
-    { icon: "🪑", title: "SaaS Seats Consumed", desc: "Fake signups eat your trial limits and plan quotas, blocking real customers and warping your funnel metrics." },
-    { icon: "🗑️", title: "CRM Poisoned", desc: "Fake leads flood your pipeline. Your sales team chases ghosts. Your cost-per-lead looks broken." },
-    { icon: "📊", title: "Analytics Destroyed", desc: "Bots tank your conversion rate, inflate bounce rates, and make a healthy funnel look like it's failing." },
-    { icon: "🔁", title: "It Never Stops", desc: "Bots evolve constantly. Without ongoing monitoring, new attack vectors open every month while you're looking elsewhere." },
+    { icon: "ðŸ’¸", title: "Ad Spend Drained", desc: "Bots click your paid ads, burn your budget, and never convert. Google and Meta won't catch all of it — their incentive is your spend." },
+    { icon: "ðŸ–¥ï¸", title: "Hosting Costs Inflated", desc: "Fake traffic drives up your server bills, CDN costs, and compute usage every single month — invisibly." },
+    { icon: "ðŸª‘", title: "SaaS Seats Consumed", desc: "Fake signups eat your trial limits and plan quotas, blocking real customers and warping your funnel metrics." },
+    { icon: "ðŸ—‘ï¸", title: "CRM Poisoned", desc: "Fake leads flood your pipeline. Your sales team chases ghosts. Your cost-per-lead looks broken." },
+    { icon: "ðŸ“Š", title: "Analytics Destroyed", desc: "Bots tank your conversion rate, inflate bounce rates, and make a healthy funnel look like it's failing." },
+    { icon: "ðŸ”", title: "It Never Stops", desc: "Bots evolve constantly. Without ongoing monitoring, new attack vectors open every month while you're looking elsewhere." },
   ];
 
   return (
@@ -918,7 +547,7 @@ function Calculator() {
       <div style={{ maxWidth: 700, margin: "0 auto", textAlign: "center" }}>
         <div style={{ fontFamily: "'Space Mono', monospace", fontSize: 11, color: "#00ff88", letterSpacing: "2px", marginBottom: "1rem" }}>WASTE CALCULATOR</div>
         <h2 style={{ fontFamily: "'Syne', sans-serif", fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 900, color: "#fff", letterSpacing: "-1px", marginBottom: "0.75rem" }}>
-          How Much Are You Losing?
+          <span id="free-audit"></span>How Much Are You Losing?
         </h2>
         <p style={{ fontFamily: "'DM Sans', sans-serif", color: "rgba(255,255,255,0.5)", marginBottom: "3rem", fontSize: 15 }}>
           Based on the industry average of 23% invalid traffic across paid campaigns.
@@ -961,7 +590,7 @@ function Calculator() {
           }}
             onMouseEnter={e => { e.currentTarget.style.background = "#00ffaa"; e.currentTarget.style.boxShadow = "0 8px 30px rgba(0,255,136,0.3)"; }}
             onMouseLeave={e => { e.currentTarget.style.background = "#00ff88"; e.currentTarget.style.boxShadow = "none"; }}
-          >Stop the Bleed — Run a Quick Scan for $99 →</a>
+          >Stop the Bleed — Run a Quick Scan for $99 â†’</a>
         </div>
       </div>
     </section>
@@ -981,7 +610,7 @@ function Pricing() {
         "Fully automated scan",
         "Bot traffic detection",
         "Estimated daily & monthly waste",
-        "Risk score (0–100)",
+        "Risk score (0â€“100)",
         "PDF report to your inbox",
         "Results in under 10 minutes",
       ],
@@ -1042,7 +671,6 @@ function Pricing() {
             Stop the Bleed Today
           </h2>
           <p style={{ fontFamily: "'DM Sans', sans-serif", color: "rgba(255,255,255,0.4)", marginTop: "0.75rem" }}>No contracts. No setup fees. No waiting. Cancel anytime.</p>
-          <p style={{ fontFamily: "'DM Sans', sans-serif", color: "rgba(255,255,255,0.5)", marginTop: "0.75rem", fontSize: 14 }}>First 25 audits are free. After that, scans start at $99. Protection plans start at $497/month.</p>
         </div>
 
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "1.5rem", alignItems: "start" }}>
@@ -1087,7 +715,7 @@ function Pricing() {
               }}
                 onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = highlight ? "0 8px 30px rgba(0,255,136,0.3)" : "0 4px 20px rgba(0,0,0,0.3)"; if (!highlight) e.currentTarget.style.background = "rgba(255,255,255,0.12)"; }}
                 onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "none"; if (!highlight) e.currentTarget.style.background = "rgba(255,255,255,0.07)"; }}
-              >{cta} →</a>
+              >{cta} â†’</a>
             </div>
           ))}
         </div>
@@ -1095,7 +723,7 @@ function Pricing() {
         {/* Guarantee */}
         <div style={{ textAlign: "center", marginTop: "3rem", padding: "1.5rem", background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: 12 }}>
           <div style={{ fontFamily: "'Space Mono', monospace", fontSize: 13, color: "rgba(255,255,255,0.6)" }}>
-            🔒 <strong style={{ color: "#fff" }}>Delivery Guarantee</strong> — If you don't receive your report within 24 hours, we'll make it right. Email <a href="mailto:info@botguardpro.com" style={{ color: "#00ff88" }}>info@botguardpro.com</a>
+            ðŸ”’ <strong style={{ color: "#fff" }}>Delivery Guarantee</strong> — If you don't receive your report within 24 hours, we'll make it right. Email <a href="mailto:info@botguardpro.com" style={{ color: "#00ff88" }}>info@botguardpro.com</a>
           </div>
         </div>
       </div>
@@ -1165,10 +793,10 @@ function FinalCTA() {
           onMouseEnter={e => { e.currentTarget.style.background = "#00ffaa"; e.currentTarget.style.transform = "translateY(-3px)"; e.currentTarget.style.boxShadow = "0 12px 60px rgba(0,255,136,0.4)"; }}
           onMouseLeave={e => { e.currentTarget.style.background = "#00ff88"; e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 0 60px rgba(0,255,136,0.2)"; }}
         >
-          🔍 Find My Leaks for $99 →
+          ðŸ” Find My Leaks for $99 â†’
         </a>
         <div style={{ marginTop: "1.5rem", fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: "rgba(255,255,255,0.3)" }}>
-          Automated report • No setup • Results in minutes
+          Automated report â€¢ No setup â€¢ Results in minutes
         </div>
       </div>
     </section>
@@ -1219,8 +847,8 @@ function Footer() {
           </div>
         </div>
         <div style={{ borderTop: "1px solid rgba(255,255,255,0.05)", paddingTop: "1.5rem", display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: "1rem" }}>
-          <div style={{ fontFamily: "'Space Mono', monospace", fontSize: 11, color: "rgba(255,255,255,0.25)" }}>© 2025 BotGuardPro. All rights reserved.</div>
-          <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: "rgba(255,255,255,0.25)" }}>Payments secured by Stripe · Hosted on Cloudflare</div>
+          <div style={{ fontFamily: "'Space Mono', monospace", fontSize: 11, color: "rgba(255,255,255,0.25)" }}>Â© 2025 BotGuardPro. All rights reserved.</div>
+          <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: "rgba(255,255,255,0.25)" }}>Payments secured by Stripe Â· Hosted on Cloudflare</div>
         </div>
       </div>
     </footer>
@@ -1245,12 +873,12 @@ export default function App() {
       `}</style>
       <Nav />
       <Hero />
-      <Scanner />
       <StatsBar />
       <SocialProof />
       <Problem />
       <HowItWorks />
       <Calculator />
+      <FoundersBeta />
       <Pricing />
       <FAQ />
       <FinalCTA />
@@ -1258,7 +886,6 @@ export default function App() {
     </>
   );
 }
-
 
 
 
