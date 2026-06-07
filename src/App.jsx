@@ -78,28 +78,47 @@ function Nav() {
 
 function Hero() {
   const [scanInput, setScanInput] = useState("");
+  const [scanEmail, setScanEmail] = useState("");
   const [scanLoading, setScanLoading] = useState(false);
   const [scanError, setScanError] = useState("");
   const [scanResult, setScanResult] = useState(null);
 
   async function handleFreeScanSubmit(e) {
     e.preventDefault();
-    if (!scanInput.trim()) return;
+    if (!scanInput.trim() || !scanEmail.trim()) {
+      setScanError("Please enter your website and business email.");
+      return;
+    }
 
     setScanLoading(true);
     setScanError("");
     setScanResult(null);
 
+    const params = new URLSearchParams(window.location.search);
+    const payload = {
+      domain: scanInput.trim(),
+      email: scanEmail.trim(),
+      timestamp: new Date().toISOString(),
+      utm_source: params.get("utm_source") || "",
+      utm_medium: params.get("utm_medium") || "",
+      utm_campaign: params.get("utm_campaign") || "",
+      utm_term: params.get("utm_term") || "",
+      utm_content: params.get("utm_content") || "",
+      referrer: document.referrer || "",
+      page_url: window.location.href,
+      user_agent: navigator.userAgent || "",
+    };
+
     try {
       const response = await fetch(`${API_BASE_URL}/scan`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ domain: scanInput.trim() }),
+        body: JSON.stringify(payload),
       });
 
       const data = await response.json();
       if (!response.ok) {
-        throw new Error(data?.message || "Scan request failed");
+        throw new Error(data?.message || data?.detail || "Scan request failed");
       }
       setScanResult(data);
     } catch (error) {
@@ -222,16 +241,35 @@ function Hero() {
           </a>
         </div>
 
-        <form onSubmit={handleFreeScanSubmit} style={{ marginTop: "1.25rem", maxWidth: 640, marginInline: "auto" }}>
+        <form onSubmit={handleFreeScanSubmit} style={{ marginTop: "1.25rem", maxWidth: 760, marginInline: "auto" }}>
           <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", justifyContent: "center" }}>
             <input
               type="text"
               value={scanInput}
               onChange={(e) => setScanInput(e.target.value)}
-              placeholder="Enter your website domain (example.com)"
+              placeholder="Website URL (example.com)"
+              required
               style={{
-                flex: "1 1 340px",
-                minWidth: 250,
+                flex: "1 1 260px",
+                minWidth: 230,
+                padding: "12px 14px",
+                borderRadius: 8,
+                border: "1px solid rgba(255,255,255,0.18)",
+                background: "rgba(0,0,0,0.25)",
+                color: "#fff",
+                fontFamily: "'DM Sans', sans-serif",
+                fontSize: 14,
+              }}
+            />
+            <input
+              type="email"
+              value={scanEmail}
+              onChange={(e) => setScanEmail(e.target.value)}
+              placeholder="Business Email"
+              required
+              style={{
+                flex: "1 1 260px",
+                minWidth: 230,
                 padding: "12px 14px",
                 borderRadius: 8,
                 border: "1px solid rgba(255,255,255,0.18)",
@@ -257,9 +295,12 @@ function Hero() {
                 opacity: scanLoading ? 0.7 : 1,
               }}
             >
-              {scanLoading ? "Scanning..." : "Run Free Scan"}
+              {scanLoading ? "Submitting..." : "Get My Free Scan"}
             </button>
           </div>
+          <p style={{ marginTop: "0.75rem", fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: "rgba(255,255,255,0.42)", lineHeight: 1.6 }}>
+            Free Scan: Checks public site signals and starts your audit profile. Revenue Recovery Report™: Uses tracker, analytics, or log data to analyze real visitor activity and estimate wasted ad spend.
+          </p>
         </form>
 
         {scanError && (
@@ -270,13 +311,12 @@ function Hero() {
 
         {scanResult && (
           <div style={{ marginTop: "1rem", marginInline: "auto", maxWidth: 640, padding: "14px", borderRadius: 10, border: "1px solid rgba(0,255,136,0.2)", background: "rgba(0,255,136,0.05)", textAlign: "left" }}>
-            <div style={{ fontFamily: "'Space Mono', monospace", fontSize: 12, color: "#00ff88", marginBottom: "0.75rem" }}>FREE SCAN RESULT</div>
+            <div style={{ fontFamily: "'Space Mono', monospace", fontSize: 12, color: "#00ff88", marginBottom: "0.75rem" }}>FREE SCAN RECEIVED</div>
             <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 14, color: "rgba(255,255,255,0.82)", lineHeight: 1.7 }}>
-              <div><strong>riskScore:</strong> {scanResult.riskScore ?? scanResult.score ?? "n/a"}</div>
-              <div><strong>fakeSessions:</strong> {scanResult.fakeSessions ?? "n/a"}</div>
-              <div><strong>estimatedDailyWasteUsd:</strong> {scanResult.estimatedDailyWasteUsd ?? "n/a"}</div>
-              <div><strong>riskLevel:</strong> {scanResult.riskLevel ?? "n/a"}</div>
-              <div><strong>recommendation:</strong> {scanResult.recommendation ?? "n/a"}</div>
+              <div>We received your site.</div>
+              <div>We checked public signals.</div>
+              <div>We prepared your audit profile.</div>
+              <div style={{ marginTop: "0.75rem", color: "rgba(255,255,255,0.55)" }}>Certified live traffic findings require tracker installation, analytics access, or log data.</div>
             </div>
             <a
               href={STRIPE.quickScan}
@@ -295,13 +335,13 @@ function Hero() {
                 fontFamily: "'Space Mono', monospace",
               }}
             >
-              Get Full Revenue Audit — $99
+              Get My Revenue Recovery Report™ — $99
             </a>
           </div>
         )}
 
         <div style={{ marginTop: "3rem", display: "flex", gap: "2rem", justifyContent: "center", flexWrap: "wrap" }}>
-          {[["$0", "Average daily waste from bot traffic"], ["80%", "Of bot clicks bypass standard blockers"], ["3 min", "Time to get your scan report"]].map(([val, label]) => (
+          {[["Public", "Free scan signal check"], ["Profile", "Audit profile started"], ["Access", "Tracker, analytics, or logs for full audit"]].map(([val, label]) => (
             <div key={val} style={{ textAlign: "center" }}>
               <div style={{ fontFamily: "'Syne', sans-serif", fontSize: "2rem", fontWeight: 900, color: "#00ff88" }}>{val}</div>
               <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: "rgba(255,255,255,0.4)", maxWidth: 140 }}>{label}</div>
