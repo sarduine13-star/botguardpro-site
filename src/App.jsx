@@ -78,13 +78,17 @@ function Nav() {
 
 function Hero() {
   const [scanInput, setScanInput] = useState("");
+  const [scanEmail, setScanEmail] = useState("");
   const [scanLoading, setScanLoading] = useState(false);
   const [scanError, setScanError] = useState("");
   const [scanResult, setScanResult] = useState(null);
 
   async function handleFreeScanSubmit(e) {
     e.preventDefault();
-    if (!scanInput.trim()) return;
+    if (!scanInput.trim() || !scanEmail.trim()) {
+      setScanError("Please enter your website and business email.");
+      return;
+    }
 
     setScanLoading(true);
     setScanError("");
@@ -94,7 +98,14 @@ function Hero() {
       const response = await fetch(`${API_BASE_URL}/scan`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ domain: scanInput.trim() }),
+        body: JSON.stringify({
+          domain: scanInput.trim(),
+          email: scanEmail.trim(),
+          timestamp: new Date().toISOString(),
+          referrer: document.referrer || "",
+          page_url: window.location.href,
+          user_agent: navigator.userAgent || "",
+        }),
       });
 
       const data = await response.json();
@@ -177,7 +188,7 @@ function Hero() {
           margin: "0 auto 3rem",
           lineHeight: 1.7,
         }}>
-          Fake clicks. Ghost sessions. Inflated costs. BotGuard Pro detects exactly who's hitting your site, what it's costing you, and how to stop them.
+          BotGuard Pro helps businesses identify suspicious traffic, wasted ad spend risk, and revenue recovery opportunities using public site signals, campaign data, and verified traffic access when available.
         </p>
 
         <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
@@ -241,6 +252,23 @@ function Hero() {
                 fontSize: 14,
               }}
             />
+            <input
+              type="email"
+              value={scanEmail}
+              onChange={(e) => setScanEmail(e.target.value)}
+              placeholder="Business email"
+              style={{
+                flex: "1 1 240px",
+                minWidth: 250,
+                padding: "12px 14px",
+                borderRadius: 8,
+                border: "1px solid rgba(255,255,255,0.18)",
+                background: "rgba(0,0,0,0.25)",
+                color: "#fff",
+                fontFamily: "'DM Sans', sans-serif",
+                fontSize: 14,
+              }}
+            />
             <button
               type="submit"
               disabled={scanLoading}
@@ -257,8 +285,11 @@ function Hero() {
                 opacity: scanLoading ? 0.7 : 1,
               }}
             >
-              {scanLoading ? "Scanning..." : "Run Free Scan"}
+              {scanLoading ? "Scanning..." : "Start Free Scan"}
             </button>
+          </div>
+          <div style={{ marginTop: "0.75rem", fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: "rgba(255,255,255,0.42)", lineHeight: 1.6 }}>
+            Free scans use public site signals and submitted campaign data. Certified live traffic findings require tracker installation, analytics access, Cloudflare logs, or server log data.
           </div>
         </form>
 
@@ -272,11 +303,9 @@ function Hero() {
           <div style={{ marginTop: "1rem", marginInline: "auto", maxWidth: 640, padding: "14px", borderRadius: 10, border: "1px solid rgba(0,255,136,0.2)", background: "rgba(0,255,136,0.05)", textAlign: "left" }}>
             <div style={{ fontFamily: "'Space Mono', monospace", fontSize: 12, color: "#00ff88", marginBottom: "0.75rem" }}>FREE SCAN RESULT</div>
             <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 14, color: "rgba(255,255,255,0.82)", lineHeight: 1.7 }}>
-              <div><strong>riskScore:</strong> {scanResult.riskScore ?? scanResult.score ?? "n/a"}</div>
-              <div><strong>fakeSessions:</strong> {scanResult.fakeSessions ?? "n/a"}</div>
-              <div><strong>estimatedDailyWasteUsd:</strong> {scanResult.estimatedDailyWasteUsd ?? "n/a"}</div>
-              <div><strong>riskLevel:</strong> {scanResult.riskLevel ?? "n/a"}</div>
-              <div><strong>recommendation:</strong> {scanResult.recommendation ?? "n/a"}</div>
+              <div><strong>Status:</strong> {scanResult.status ?? scanResult.message ?? "Scan request received"}</div>
+              <div><strong>Domain:</strong> {scanResult.domain ?? scanInput.trim()}</div>
+              <div><strong>Next step:</strong> {scanResult.nextStep ?? scanResult.recommendation ?? "Review the intake details and continue with a certified audit when ready."}</div>
             </div>
             <a
               href={STRIPE.quickScan}
@@ -301,7 +330,7 @@ function Hero() {
         )}
 
         <div style={{ marginTop: "3rem", display: "flex", gap: "2rem", justifyContent: "center", flexWrap: "wrap" }}>
-          {[["$0", "Average daily waste from bot traffic"], ["80%", "Of bot clicks bypass standard blockers"], ["3 min", "Time to get your scan report"]].map(([val, label]) => (
+          {[["$0", "Average daily waste from bot traffic"], ["80%", "Of bot clicks bypass standard blockers"], ["Fast", "Time to start your traffic risk scan"]].map(([val, label]) => (
             <div key={val} style={{ textAlign: "center" }}>
               <div style={{ fontFamily: "'Syne', sans-serif", fontSize: "2rem", fontWeight: 900, color: "#00ff88" }}>{val}</div>
               <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: "rgba(255,255,255,0.4)", maxWidth: 140 }}>{label}</div>
@@ -356,8 +385,8 @@ function Problem() {
 
 function HowItWorks() {
   const steps = [
-    { num: "01", title: "You Purchase a Plan", desc: "Checkout takes 60 seconds. No setup calls, no contracts, no waiting." },
-    { num: "02", title: "We Scan Your Traffic", desc: "Our engine analyzes your sessions, fingerprints suspicious behavior, and cross-references known bot sources." },
+    { num: "01", title: "You Start a Scan or Purchase a Plan", desc: "Start with a free risk scan or choose a paid audit when you are ready." },
+    { num: "02", title: "You Provide Traffic Access", desc: "Certified live traffic findings require tracker installation, analytics access, Cloudflare logs, or server log data." },
     { num: "03", title: "You Get the Report", desc: "A full PDF lands in your inbox — who, what, where, how, and exactly what it's costing you." },
     { num: "04", title: "You Get the Fix", desc: "Block rules, ad platform settings, and step-by-step instructions to stop the bleed immediately." },
   ];
@@ -368,7 +397,7 @@ function HowItWorks() {
         <div style={{ textAlign: "center", marginBottom: "4rem" }}>
           <div style={{ fontFamily: "'Space Mono', monospace", fontSize: 11, color: "#00ff88", letterSpacing: "2px", marginBottom: "1rem" }}>HOW IT WORKS</div>
           <h2 style={{ fontFamily: "'Syne', sans-serif", fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 900, color: "#fff", letterSpacing: "-1px", margin: 0 }}>
-            Pay. Scan. Fix. Done.
+            Scan. Verify. Recover.
           </h2>
         </div>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "2rem" }}>
@@ -437,7 +466,7 @@ function Calculator() {
 
           <div style={{ marginTop: "1.5rem", padding: "1rem", background: "rgba(0,255,136,0.05)", border: "1px solid rgba(0,255,136,0.15)", borderRadius: 10 }}>
             <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 14, color: "rgba(255,255,255,0.6)" }}>
-              Results begin in minutes. Full audit same day.
+              Start quickly. Full live-traffic findings require tracker, analytics, or log access.
             </div>
           </div>
 
@@ -468,13 +497,13 @@ function Pricing() {
       price: "$99",
       period: "one-time",
       tag: null,
-      desc: "Find fake traffic, wasted ad spend, and revenue leaks quickly. Results begin in minutes. Full audit same day.",
+      desc: "Find fake traffic, wasted ad spend, and revenue leaks quickly. Start quickly. Full live-traffic findings require tracker, analytics, or log access.",
       features: [
-        "Instant automated scan",
+        "Free risk scan and audit intake",
         "Bot traffic detection report",
         "Estimated daily & monthly waste",
         "PDF delivered to your inbox",
-        "Results in minutes",
+        "Setup instructions included",
       ],
       cta: "Quick Revenue Audit — $99",
       href: STRIPE.quickScan,
@@ -609,8 +638,8 @@ function Pricing() {
 function FAQ() {
   const [open, setOpen] = useState(null);
   const items = [
-    { q: "How fast do I get my Quick Revenue Audit report?", a: "Results begin in minutes. Full audit same day." },
-    { q: "What do I need to provide?", a: "Just your website URL and email address at checkout. No code installs, no API keys, no technical setup required." },
+    { q: "How fast do I get my Quick Revenue Audit report?", a: "Start quickly. Full live-traffic findings require tracker, analytics, or log access." },
+    { q: "What do I need to provide?", a: "For the free scan, provide your website and business email. For certified live traffic findings, provide tracker, analytics, Cloudflare logs, or server log access." },
     { q: "What if I don't have paid ads running?", a: "Bots still cost you. Fake signups, server load, analytics pollution, and CRM spam affect every site. The scan detects all of it." },
     { q: "Is the Revenue Recovery Audit a subscription?", a: "No. The $297 Revenue Recovery Audit is a one-time payment with tracking analysis, revenue leak analysis, traffic breakdown, and a recovery roadmap." },
     { q: "Can I cancel Revenue Shield Beta anytime?", a: "Yes. Revenue Shield Beta is month-to-month at $297/mo with founders pricing locked for life while enrolled." },
@@ -670,7 +699,7 @@ function CTA() {
           Bots Don't Take<br />Days Off.
         </h2>
         <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 16, color: "rgba(255,255,255,0.5)", marginBottom: "2.5rem", lineHeight: 1.7 }}>
-          Every day you wait is another day of wasted spend, fake traffic, and revenue leaks. Results begin in minutes. Full audit same day.
+          Every day you wait is another day of wasted spend, fake traffic, and revenue leaks. Start quickly. Full live-traffic findings require tracker, analytics, or log access.
         </p>
         <a href={STRIPE.quickScan} target="_blank" rel="noopener noreferrer"
           style={{
